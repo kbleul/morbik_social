@@ -16,7 +16,8 @@ const updateUser = async ( req , res ) => {
     if(req.body.password) {
 
     if(!validator.isStrongPassword(req.body.password)) { 
-        return res.status(404).json({error: "Please use a strong password. Password should include a capital letter , small letter , number and symbol"})
+        return res.status(404).json({error:`Please use a strong password.
+         Password should include a capital letter , small letter , number and symbol`})
     }
 
         try {
@@ -34,7 +35,11 @@ const updateUser = async ( req , res ) => {
        try {
 
        const user_json = await User.findOneAndUpdate({ _id : userid } , { ...req.body })
-          res.status(200).json(user_json)
+
+       //create a safe json file that does not include password or other fields
+       const {password , createdAt , updatedAt , ...safe_json} = user._doc
+
+          res.status(200).json(safe_json)
 
        } catch(error) {    res.status(404).json({error: "Change user info failed "}) }
 }
@@ -45,7 +50,6 @@ const deleteUser = async ( req , res ) => {
     const userparam_id = req.params.id
 
   if(!userid || !userparam_id )
-  
     { return res.status(404).json({error: "Bad request : id not provided"}) }
 
   if( !mongoose.Types.ObjectId.isValid(userid._id.toString()) ) 
@@ -73,21 +77,73 @@ const getUser = async ( req , res ) => {
 
 
     const user =  await User.findById(id)
+     //create a safe json file that does not include password or other fields
+     const {password , createdAt , updatedAt , ...safe_json} = user._doc
+
 
         if(!user) return res.status(404).json({error: "User does not exist"})
 
-        res.status(200).json(user)
+        res.status(200).json(safe_json)
 }
 
 //UPDATE - FOLLOW user
 const followUser = async ( req , res ) => {
+    const currentuser = req.user._id.toString()
+    const userparam_id = req.params.id
+
+        if(currentuser !== userparam_id) {
+
+            try {
+
+                const user = await User.findById(userparam_id)
+                const currentuser_obj = await User.findById(currentuser)
+
+                if(!user.followers.includes(currentuser)) 
+                {
+                    await user.updateOne({ $push : { followers : currentuser }})
+                    await currentuser_obj.updateOne({ $push : { followering : user._id }})
+
+                    res.status(200).json("Followed user")
+                    return
+                }
+
+                res.status(401).json({error : "You aleady follow user"})
+
+            } catch(error) { res.status(500).json(error) }
+        }
+
+        else {  res.status(403).json("You can not follow yourself")  }
 
 }
 
 
 //UPDATE - UNFOLLOW user
 const unfollowUser = async ( req , res ) => {
-    
+    const currentuser = req.user._id.toString()
+    const userparam_id = req.params.id
+
+        if(currentuser !== userparam_id) {
+
+            try {
+
+                const user = await User.findById(userparam_id)
+                const currentuser_obj = await User.findById(currentuser)
+
+                if(user.followers.includes(currentuser)) 
+                {
+                    await user.updateOne({ $pull : { followers : currentuser }})
+                    await currentuser_obj.updateOne({ $pull : { followering : user._id }})
+
+                    res.status(200).json("Unfollowed user")
+                    return
+                }
+
+                res.status(401).json({error : "You don't follow user"})
+
+            } catch(error) { res.status(500).json(error) }
+        }
+
+        else {  res.status(403).json("Action on yourself")  }
 }
 
 

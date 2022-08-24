@@ -17,10 +17,10 @@ router.delete("/:id", deleteUser)
 router.get("/:id", getUser)
 
 //FOLLOW USER
-router.get("/:id", followUser)
+router.put("/follow/:id", followUser)
 
 //UNFOLLOW USER
-router.get("/:id", unfollowUser)
+router.put("/unfollow/:id", unfollowUser)
 
 
 module.exports = router
