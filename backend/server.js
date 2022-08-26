@@ -5,6 +5,8 @@ const helmet = require("helmet")
 
 const userAuthRoutes = require("./routes/userAuthRoutes")
 const userRoutes = require("./routes/userRoutes")
+const postRoutes = require("./routes/postRoutes")
+
 
 
 
@@ -31,3 +33,5 @@ const app = express()
 
     app.use("/api/auth", userAuthRoutes)
     app.use("/api/user", userRoutes)
+    app.use("/api/post", postRoutes)
+

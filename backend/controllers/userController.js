@@ -10,7 +10,7 @@ const updateUser = async ( req , res ) => {
 
  
     if( !mongoose.Types.ObjectId.isValid(userid._id)  || userid._id.toString() !== userparam_id)
-        { return res.status(404).json({error: "User not found "}) }
+        { return res.status(404).json({error: "User id not valid "}) }
 
 
     if(req.body.password) {
@@ -101,7 +101,7 @@ const followUser = async ( req , res ) => {
                 if(!user.followers.includes(currentuser)) 
                 {
                     await user.updateOne({ $push : { followers : currentuser }})
-                    await currentuser_obj.updateOne({ $push : { followering : user._id }})
+                    await currentuser_obj.updateOne({ $push : { following : user._id }})
 
                     res.status(200).json("Followed user")
                     return
@@ -132,7 +132,7 @@ const unfollowUser = async ( req , res ) => {
                 if(user.followers.includes(currentuser)) 
                 {
                     await user.updateOne({ $pull : { followers : currentuser }})
-                    await currentuser_obj.updateOne({ $pull : { followering : user._id }})
+                    await currentuser_obj.updateOne({ $pull : { following : user._id }})
 
                     res.status(200).json("Unfollowed user")
                     return
@@ -148,9 +148,5 @@ const unfollowUser = async ( req , res ) => {
 
 
 module.exports = {
-    updateUser,
-    deleteUser,
-    getUser,
-    followUser, 
-    unfollowUser 
+    updateUser, deleteUser, getUser, followUser, unfollowUser 
 }
