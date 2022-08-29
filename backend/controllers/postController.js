@@ -108,8 +108,10 @@ const getTimelinePost = async (req , res ) => {
     console.log("dfgfd", req.user._id.toString())
     let currentuser
     try {
-         currentuser = await User.findById(req.user._id.toString()); console.log(currentuser.username)
-        const userposts = await Post.find( { userId : currentuser._id }); console.log(userposts , currentuser.following)
+         currentuser = await User.findById(req.user._id.toString()); 
+
+        const userposts = await Post.find( { userId : currentuser._id }); 
+        
         const friendsposts = await Promise.all(
             currentuser.following.map( friend => {
              return Post.find({ userId : friend })
