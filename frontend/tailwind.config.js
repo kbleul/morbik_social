@@ -4,7 +4,17 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'content-spliter': ['"Aboreto"', 'cursive'],
+      },
+      height: {
+        'nav': '6.25rem',
+      },
+      margin: {
+        "from-nav" : "6.26rem"
+      }
+    },
   },
   plugins: [],
 }

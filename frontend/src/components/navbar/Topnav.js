@@ -1,6 +1,7 @@
 
-import logo from "../../assets/logo/logoligh.png"
 import Search from "../Search"
+
+import { Link } from "react-router-dom"
 
 const TopNav = () => {
   return (
@@ -13,8 +14,8 @@ const TopNav = () => {
           </div>
 
           <div className="w-1/5 flex justify-evenly font-bold" >
-            <button>Feed</button>
-            <button>Home</button>
+            <Link to={"/"}><button>Feed</button></Link>
+            <Link to={"/myhome"}><button>Home</button></Link>
           </div>
 
       </section>
