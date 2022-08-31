@@ -1,7 +1,7 @@
 import coverp from "../assets/profile/6.jpg"
 import pp from "../assets/profile/5.jpg"
 
-const Aboutme = () => {
+const Hero = () => {
   return (
     <section>
         <img src={coverp} alt="cover" className="h-[70vh] w-full"/>
@@ -35,7 +35,7 @@ const Aboutme = () => {
   )
 }
 
-export default Aboutme
+export default Hero
 
 // <div>
 //                 <p>6 Followers</p>

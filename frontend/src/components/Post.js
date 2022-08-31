@@ -3,8 +3,9 @@ import pp from "../assets/profile/2.jpg"
 
 const Post = () => {
   return (
-    <div className="w-[40%] ml-[30%] mt-36 flex">
+    <div className="w-[90%] ml-[5%] mt-4 flex">
         <img src={pp}  alt="profile" className='w-16 h-16 rounded-full'/>
+        
         <div className="ml-4 w-4/5">
           <input value="" placeholder="What's on your mind ?" className="text-xl py-4 border-b-2 focus:outline-0 outline-0 w-full" />
           <div className="flex justify-between items-center mt-1">
