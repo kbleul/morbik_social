@@ -13,7 +13,8 @@ module.exports = {
       },
       margin: {
         "from-nav" : "6.26rem"
-      }
+      },
+
     },
   },
   plugins: [],

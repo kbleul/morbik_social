@@ -5,7 +5,7 @@ import SecondaryNav from "./SecondaryNav"
 const Navbar = () => {
 
   return (
-    <article className="bg-slate-500  text-white fixed top-0 h-nav w-full ">
+    <article className="bg-slate-500  text-white fixed top-0 h-nav w-full z-10">
       <TopNav />
       <SecondaryNav />
     </article>
