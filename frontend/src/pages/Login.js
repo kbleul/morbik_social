@@ -1,18 +1,29 @@
 import bg1 from "../assets/logo/bg1.jpg"
-import { useEffect } from "react"
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import background from "../assets/profile/36.jpg"
+import loading from "../assets/loading/loading2.gif"
 
-const Login = ( { set_shownav } ) => {
+import { useLogin } from "../customHooks/useLogin"
 
-    useEffect(() => {  set_shownav(false)  },[])
+const Login = () => {
+
+    const {login , isloading , error } = useLogin()
+    const [username_or_passw, set_username_or_passw] = useState("")
+    const [password, set_password] = useState("")
+
+    
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+  
+        await login(username_or_passw , password)
+    }
 
   return (
     <article className="h-[100vh] grid grid-cols-3">
-        <section className="col-span-2 bg-gradient-to-l  hover:bg-gradient-to-r from-gray-500 to-gray-900 text-white ">
-            <h2 className="ml-16 mt-16 pl-4 font-bold text-3xl border-l-4 border-amber-300">Morbik Social</h2>
+        <section className="col-span-2 bg-gradient-to-r  hover:bg-gradient-to-l from-gray-500 to-gray-900 text-white ">
+            <h2 className="ml-16 mt-12 pl-4 font-bold text-3xl border-l-4 border-amber-300">Morbik Social</h2>
 
-            <div className="mt-[15%]">
+            <div className="mt-[8%]">
                 <div className="flex  items-center">
                     <p className="text-right w-1/2 text-xl">Log in using </p>
                     
@@ -24,12 +35,28 @@ const Login = ( { set_shownav } ) => {
 
             <p className="text-center pt-12 pb-2">Or</p>
 
-            <div className="flex flex-col">
-                <input className="w-3/5 ml-[20%] py-4 px-8 mt-8 rounded-full" type="text" value="" placeholder="Email / Username" />
-                <input className="w-3/5  ml-[20%] py-4 px-8 mt-8 rounded-full" type="text" value="" placeholder="Password" />
-                <button className="w-1/5 ml-[40%] mt-16 py-2 px-4 bg-black hover:bg-gray-800 text-white text-xl font-bold rounded-full">Log in</button>
+            <form onSubmit={e => handleSubmit(e)} className="flex flex-col">
+                <input className="w-3/5 ml-[20%] py-4 px-8 mt-8 rounded-full text-black" 
+                    type="text" value={username_or_passw} placeholder="Email / Username" 
+                      onChange={ e => set_username_or_passw(e.target.value) } />
 
-            </div>
+                <input className="w-3/5  ml-[20%] py-4 px-8 mt-8 rounded-full text-black" 
+                  type="text" value={password} min="6" placeholder="Password" 
+                    onChange={ e => set_password(e.target.value) }/>
+
+                    { error && <p className="text-yellow-400 text-sm w-3/5 ml-[24%] pt-[1%]">! {error}</p>}
+
+                    { isloading && 
+                      <div className="flex justify-center items-center w-3/5  ml-[20%]">
+                        <img className="w-16 h-24 py-4" src={loading} alt="loading"/>
+                      </div>
+                    }
+
+                <button className="w-1/5 ml-[40%] mt-16 mb-4 py-2 px-4 bg-black hover:bg-gray-800
+                 text-white text-xl font-bold rounded-full">Log in</button>
+
+            </form>
+
         </section>
 
         <section className="text-center col-span-1 ">

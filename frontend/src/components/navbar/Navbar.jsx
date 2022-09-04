@@ -15,5 +15,3 @@ const Navbar = () => {
 }
 
 export default Navbar
-
-//<img src={logo} alt="logo" className="w-1/5" />

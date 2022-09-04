@@ -1,5 +1,5 @@
 import Navbar from "./components/navbar/Navbar"
-import {  Routes , Route } from "react-router-dom"
+import {  Routes , Route , Navigate } from "react-router-dom"
 import Feed from "./pages/Feed"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
@@ -7,21 +7,26 @@ import Signup from "./pages/Signup"
 
 import { useState } from "react"
 
+import { useAuthContext } from "./customHooks/useAuthContext"
 
 
 function App() {
     const [shownav , set_shownav] = useState(true)
+
+    const { user } = useAuthContext()
+
   return (
     <div className="relative">
 
-       { shownav && <Navbar />}
+       { user && <Navbar />}
 
           <Routes>
-            <Route path="/" element= { <Login set_shownav={set_shownav}/>} />
-            <Route path="/signup" element= { <Signup set_shownav={set_shownav}/>} />
+            <Route path="/" element= { user ?  <Feed /> : <Navigate to="/login" /> } />
 
-            <Route path="/timeline" element= { <Feed />} />
-            <Route path="/myhome" element= { <Home />} />
+            <Route path="/login" element= { !user ?   <Login /> : <Navigate to="/" /> } />
+            <Route path="/signup" element= { !user ?  <Signup /> : <Navigate to="/" />  } />
+
+            <Route path="/myhome" element= { user ?  <Home /> : <Navigate to="/login" /> } />
           </Routes>
   
     </div>
@@ -29,5 +34,3 @@ function App() {
 }
 
 export default App;
-// <Route path="/Home" element= { <Home />} />
-// <Route path="*" element={<NoPage />} />

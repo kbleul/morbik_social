@@ -18,14 +18,15 @@ const createToken = (_id) =>
 
     } catch(error) {
         res.status(400).json({error : error.message})
-
     }
 }
 
 const loginUser = async ( req , res ) => {
-    const { username : username_or_email ,  password } = req.body
+    const { username_or_email  ,  password } = req.body
 
     console.log("username ::: " , username_or_email)
+    console.log("password ::: " , password)
+
 
     try {
         const user = await User.login( username_or_email , password )
