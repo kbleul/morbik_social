@@ -7,12 +7,11 @@ import Signup from "./pages/Signup"
 
 import { useState } from "react"
 
-import { useAuthContext } from "./customHooks/useAuthContext"
+import { useAuthContext } from "./customHooks/useContext"
 
 
 function App() {
     const [shownav , set_shownav] = useState(true)
-
     const { user } = useAuthContext()
 
   return (

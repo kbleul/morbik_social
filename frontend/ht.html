@@ -1,0 +1,40 @@
+<1DOCTYPE HTML>
+<html>
+	<head></head>
+	<body>
+		
+
+<form>
+	<div>
+	  <div id="img-preview"></div>
+	  <input type="file" accept="image/*" id="choose-file" name="choose-file" />
+	  <label for="choose-file">Choose File</label>
+	</div>
+  </form>
+	</body> 
+
+	<script>
+
+
+
+const chooseFile = document.getElementById("choose-file");
+const imgPreview = document.getElementById("img-preview");
+chooseFile.addEventListener("change", function () {
+  getImgData();
+});
+
+function getImgData() {
+  const files = chooseFile.files[0];
+  if (files) {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(files);
+    fileReader.addEventListener("load", function () {
+      imgPreview.style.display = "block";
+      imgPreview.innerHTML = '<img src="' + this.result + '" />';
+
+	  console.log(this.result)
+    });    
+  }
+}
+</script>
+</html>

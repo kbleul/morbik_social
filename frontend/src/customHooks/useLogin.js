@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { AUTH_ACTIONS } from "../contex/authContext"
-import { useAuthContext } from "../customHooks/useAuthContext"
+import { useAuthContext } from "./useContext"
 
 export const useLogin = () => {
     const [error , seterror] = useState(null)

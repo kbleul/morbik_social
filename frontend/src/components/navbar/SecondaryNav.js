@@ -2,7 +2,7 @@ import { useState } from 'react'
 import pp from "../../assets/profile/5.jpg"
 
 import { AUTH_ACTIONS } from "../../contex/authContext"
-import { useAuthContext } from "../../customHooks/useAuthContext"
+import { useAuthContext } from "../../customHooks/useContext"
 
 const SecondaryNav = () => {
 

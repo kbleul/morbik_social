@@ -5,13 +5,16 @@ import './index.css';
 import App from './App';
 
 import  AuthContextProvider  from "./contex/authContext"
+import Newuser_ContextProvider from "./contex/newSignupContext"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Router>
       <AuthContextProvider >
-        <App />
+        <Newuser_ContextProvider>
+          <App />
+        </Newuser_ContextProvider>
       </AuthContextProvider>
     </Router>
   </React.StrictMode>

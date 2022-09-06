@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import {  useState } from 'react'
 
 import { AUTH_ACTIONS } from "../contex/authContext"
-import { useAuthContext } from "../customHooks/useAuthContext"
+import { useAuthContext } from "./useContext"
+import { useNewUserContext } from "./useContext"
 
 export const useSignup = () => {
     const [error , seterror] = useState(null)
     const [isloading , setisloading] = useState(null)
     
     const { dispatch } = useAuthContext()
+    const {  set_isnew } = useNewUserContext()
 
     const signup = async ( email , username , password ) => {
         seterror(null)
@@ -36,6 +38,8 @@ export const useSignup = () => {
             //save user to local storage
             localStorage.setItem("user" , JSON.stringify(json))
 
+            //update new user just signed in state
+            set_isnew(true)
             // update auth context
             dispatch({ type : AUTH_ACTIONS.LOGIN , payload : json })
           

@@ -7,8 +7,8 @@ const validator = require("validator")
 const updateUser = async ( req , res ) => {
     const userid = req.user
     const userparam_id = req.params.id
-
  
+   
     if( !mongoose.Types.ObjectId.isValid(userid._id)  || userid._id.toString() !== userparam_id)
         { return res.status(404).json({error: "User id not valid "}) }
 
@@ -37,11 +37,28 @@ const updateUser = async ( req , res ) => {
        const user_json = await User.findOneAndUpdate({ _id : userid } , { ...req.body })
 
        //create a safe json file that does not include password or other fields
-       const {password , createdAt , updatedAt , ...safe_json} = user._doc
+       const {password , createdAt , updatedAt , ...safe_json} = user_json
 
           res.status(200).json(safe_json)
 
        } catch(error) {    res.status(404).json({error: "Change user info failed "}) }
+}
+
+//PUT UPDATE PROFILE Picture
+const updateProfilePic = async ( req, res ) => {
+    console.log(req.img)
+      const userparam_id = req.params.id
+
+      try {
+          const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"profilePicture" : req.img} })
+  console.log(user_json)
+          //create a safe json file that does not include password or other fields
+          const {_id , username , profilePicture } = user_json
+          res.status(200).json({_id , username , profilePicture })
+          }  catch(error) {    
+              res.status(404).json({error: "Profile picture not uploaded "}) 
+          }
+
 }
 
 //DELETE user
@@ -148,5 +165,5 @@ const unfollowUser = async ( req , res ) => {
 
 
 module.exports = {
-    updateUser, deleteUser, getUser, followUser, unfollowUser 
+    updateUser, updateProfilePic ,deleteUser, getUser, followUser, unfollowUser 
 }
