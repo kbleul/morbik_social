@@ -7,11 +7,15 @@ import Postcard from "../components/Postcard"
 import { useAuthContext } from "../customHooks/useContext"
 import { useNewUserContext } from "../customHooks/useContext"
 
+import { AUTH_ACTIONS } from "../contex/authContext"
+
 import blackimg from "../assets/placeholder/black.png"
 
 const Feed = () => {
 
-    const  { user } = useAuthContext()
+    const  { user , dispatch } = useAuthContext()
+    const  { isnew , set_isnew } = useNewUserContext()
+
 
     const [ aboutme , set_aboutme ] = useState("")
     const [ relationship , set_relationship ] = useState("It's a Secret")
@@ -21,7 +25,7 @@ const Feed = () => {
     const [ file , set_file ] = useState(null)
 
     const [ src , set_src ] = useState(null)
-    const [ currentform , set_currentform ] = useState("profilepic")
+    const [ currenttask , set_currenttask ] = useState("profilepic")
 
 
 
@@ -40,30 +44,96 @@ const Feed = () => {
 
     const postProfilePicture = async (e) => {
       e.preventDefault()
-      const formData = new FormData();
+      
+      if(file){
+        const formData = new FormData();
 
-	    	formData.append('File', file);
+	    	formData.append('avatar', file);
 
-        fetch('/api/user/profile/',
+        fetch(`/api/user/profile/updateProfile/${user._id}`,
           {    
             method: 'PUT',   
             body: formData,
+            headers : { "Authorization" : `Bearer ${user.token}`}
           }
     
         ).then((response) => response.json())
-          .then((result) => {  console.log('Success:', result);})
+          .then((result) => { 
+            console.log({...user, profilePicture : result.profilePicture}) 
+            dispatch( { type : AUTH_ACTIONS.UPDATE_PP , payload : {...user, profilePicture : result.profilePicture}})
+            set_currenttask("coverpic")
+            set_src(null)
+          })
             .catch((error) => {  console.error('Error:', error);  });
+    }
+  }
+
+    const postCoverPicture = async (e) => {
+      e.preventDefault()
+
+      
+      if(file){
+        const formData = new FormData();
+
+	    	formData.append('cover', file);
+
+
+        fetch(`/api/user/cover/updateCover/${user._id}`,
+          {    
+            method: 'PUT',   
+            body: formData,
+            headers : { "Authorization" : `Bearer ${user.token}`}
+          }
+    
+        ).then((response) => response.json())
+          .then((result) => {  
+            dispatch( { type : AUTH_ACTIONS.UPDATE_COVER , payload : {...user, coverPicture : result.coverPicture}})
+            set_currenttask("others")
+            set_src(null)
+      console.log(user)
+
+          })
+            .catch((error) => {  console.error('Error:', error);  });
+    }
+    }
+
+
+    const postOtherInfo = async (e) => {
+
+      const options = {
+        method : "PUT",
+        header : { "content-Type" : "application/json" },
+        body : JSON.stringify( { disc : aboutme , city , country , relationship} ),
+        headers : { "Authorization" : `Bearer ${user.token}`  }
+      }
+
+     await fetch("/api/user/" + user._id , options )
+          .then(response => response.json())
+            .then(result => {
+              dispatch( { type : AUTH_ACTIONS.UPDATE_COVER , payload : {...user, disc : result.disc ,  country : result.country , city : result.city , relationship : result.relationship }})
+                    set_aboutme("")
+                    set_relationship("")
+                    set_country("")
+                    set_city("")
+                    set_file(null)
+                    set_src(null)
+                    set_isnew(false)
+            })
+            .catch((error) => {  console.error('Error:', error);  });
+
     }
 
   return (
     <article>
 
+    { isnew ? 
+
     <section className="mt-32 flex flex-col"> 
         <h3 className="text-2xl text-center">Just a few more details</h3>
         <div className="mt-6 flex">
  
-      { currentform === "profilepic" && <form method="post" enctype="multipart/form-data" onSubmit={e => postProfilePicture(e)} className="flex flex-col w-1/2 ml-[25%]">
-          <label className="text-center">Set you profile picture</label>
+      { currenttask === "profilepic" && <form enctype="multipart/form-data" onSubmit={e => postProfilePicture(e)} className="flex flex-col w-1/2 ml-[25%]">
+          <label className="text-center">Set your profile picture</label>
           <input type="file" name="avatar" accept=".png, .jpg, .jpeg" 
             onChange={e => {
               set_file(e.target.files[0])
@@ -77,25 +147,48 @@ const Feed = () => {
               onClick={() => { set_file(null); set_src("")}}>x</p>
               </div> : 
               <div className="w-full relative flex justify-center" >
+                <img className="w-64 h-64 rounded-full mt-12" src={blackimg} alt="default profile"/>
+              </div>
+          }
+          </div>
+
+          <button>Submit</button>
+      
+          <button onClick={e =>{ e.preventDefault();  set_currenttask("coverpic")}}>skip</button>
+          </form>
+    
+    }
+         
+    { currenttask === "coverpic" && 
+        <form enctype="multipart/form-data" onSubmit={e => postCoverPicture(e)} className="flex flex-col w-1/2 ml-[25%]">
+          <label className="text-center">Set cover picture</label>
+          <input type="file" name="cover" accept=".png, .jpg, .jpeg" 
+            onChange={e => {
+              set_file(e.target.files[0])
+              getImgData(e.target.files[0]);
+          }  }/>
+
+          <div className="w-1/2 ml-[25%] flex justify-end items-center">
+            { src ? <div className="w-full relative flex justify-center" >
+              <img className="w-full h-[70vh] mt-12 " src={src} alt="cover picture"/>
+              <p className="absolute top-0 left-[47%] text-4xl text-red-600 rounded-full hover:text-red-400 " 
+              onClick={() => { set_file(null); set_src("")}}>x</p>
+              </div> : 
+              <div className="w-full relative flex justify-center" >
                 <img className="w-64 h-64 rounded-full " src={blackimg} alt="default profile"/>
               </div>
           }
           </div>
 
           <button>Submit</button>
+          <button onClick={e =>{ e.preventDefault();  set_currenttask("others")}}>skip</button>
       </form>
-    
-    }
-         
-    { currentform === "coverpic" && <div>
-      <label>Say someting about yourself</label>
-      <textarea value={aboutme} onChange={ e => set_aboutme(e.target.value)}/>
-    </div>
     }
 
-        { currentform === "others" && <div className="w-2/3">
+        { currenttask === "others" && <form className="w-2/3" onSubmit={e => postOtherInfo(e)}>
             
-            
+        <label>Say someting about yourself</label>
+        <textarea value={aboutme} onChange={ e => set_aboutme(e.target.value)}/>
         <label>Relationship Status</label>
 
         <select value={relationship} onChange={e => set_relationship(e.target.value) }>            
@@ -350,27 +443,16 @@ const Feed = () => {
         </select>
 
         <label>City</label>
-        <input type="text" value={city} onClick={e => set_city(e.target.value) } />
-       </div>}
+        <input type="text" value={city} onChange={e => set_city(e.target.value) } />
+
+        <button>Submit</button>
+       </form>
+      }
           
         </div>
       </section>
       
-   
-
-    </article>
-  )
-}
-
-export default Feed
-
-
-/*
-
-
-
- { isnew ? 
-       :
+      :
       <article>
         <section className="mt-from-nav flex">
                 <p className="mt-8 w-1/2 font-content-spliter text-[1.3rem] font-bold self-end border-l-4 border-orange-500 pl-2 ml-20">My Feed</p>
@@ -390,17 +472,17 @@ export default Feed
           <div className="h-[100vh] overflow-hidden hover:overflow-y-scroll border-t-2 border-green-600 mt-2">
           { Posts.reverse().map(post => (
             <Postcard key={post.id} post={post} issuggestion={true} />
-          ))}
+            ))
+          }
           </div>
         </section>
       </article>
     }
+   
 
-/*
-<label>Profile Picture</label>
-<FileUpload />
+    </article>
+  )
+}
 
-<label>Cover Picture</label>
-<FileUpload />
-</div>
-*/
+export default Feed
+

@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import pp from "../../assets/profile/5.jpg"
+import pp from "../../assets/placeholder/black.png"
 
 import { AUTH_ACTIONS } from "../../contex/authContext"
 import { useAuthContext } from "../../customHooks/useContext"
 
+
+
 const SecondaryNav = () => {
 
-  const { dispatch } = useAuthContext()
+  const { user , dispatch } = useAuthContext()
 
   const [ menuon , set_menuon] = useState(false)
 
@@ -32,7 +34,8 @@ const SecondaryNav = () => {
         </div>
 
         <div className="w-1/2 flex justify-end items-center">
-           <img src={pp} alt="profile" className='w-10 h-10 rounded-full mr-16'/>
+           <p className="w-4/5 justify-self-end text-white font-bold">{user.username_or_email}</p>
+           <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-10 h-10 rounded-full mr-16'/>
         </div>
 
     </section>

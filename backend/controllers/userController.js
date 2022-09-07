@@ -37,9 +37,9 @@ const updateUser = async ( req , res ) => {
        const user_json = await User.findOneAndUpdate({ _id : userid } , { ...req.body })
 
        //create a safe json file that does not include password or other fields
-       const {password , createdAt , updatedAt , ...safe_json} = user_json
+       const {disc , city , country , relationship} = user_json
 
-          res.status(200).json(safe_json)
+          res.status(200).json({disc , city , country , relationship})
 
        } catch(error) {    res.status(404).json({error: "Change user info failed "}) }
 }
@@ -52,13 +52,25 @@ const updateProfilePic = async ( req, res ) => {
       try {
           const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"profilePicture" : req.img} })
   console.log(user_json)
-          //create a safe json file that does not include password or other fields
-          const {_id , username , profilePicture } = user_json
-          res.status(200).json({_id , username , profilePicture })
+
+          res.status(200).json({ profilePicture : req.img })
           }  catch(error) {    
               res.status(404).json({error: "Profile picture not uploaded "}) 
           }
+}
 
+const updateCoverPic = async ( req , res ) => {
+    console.log(req.img)
+      const userparam_id = req.params.id
+
+      try {
+          const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"coverPicture" : req.img} })
+             console.log(user_json)
+       
+             res.status(200).json({ coverPicture : req.img })
+          }  catch(error) {    
+              res.status(404).json({error: "Profile picture not uploaded "}) 
+          }
 }
 
 //DELETE user
@@ -165,5 +177,5 @@ const unfollowUser = async ( req , res ) => {
 
 
 module.exports = {
-    updateUser, updateProfilePic ,deleteUser, getUser, followUser, unfollowUser 
+    updateUser, updateProfilePic , updateCoverPic ,deleteUser, getUser, followUser, unfollowUser 
 }

@@ -48,19 +48,19 @@ const userSchema = new Schema({
         max: 50,
         default : ""
     },
+    country : {
+        type : String,
+        max: 50,
+        default : ""
+    },
     city : {
         type : String,
         max: 50,
         default : ""
     },
-    from : {
-        type : String,
-        max: 50,
-        default : ""
-    },
     relationship : {
-        type : Number,
-        enum: [1 , 2, 3]
+        type : String,
+        default : "Secret"
     }
 }, { timestamps : true })
 

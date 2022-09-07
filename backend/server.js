@@ -7,9 +7,7 @@ const userAuthRoutes = require("./routes/userAuthRoutes")
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
 
-const User = require("./models/userModel")
-
-
+var path = require('path');
 
 const multer  = require('multer')
 const storage = multer.diskStorage({
@@ -33,7 +31,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 const app = express()
-app.use(express.static('public')); 
+
+app.use("/public", express.static(path.join(__dirname, 'public')));
+// app.use(express.static('public')); 
 
     //middlewares
     app.use(express.json())
@@ -56,11 +56,12 @@ app.use(express.static('public'));
 
    
        
-    // })
+
 
     
     app.use("/api/auth", userAuthRoutes)
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
+    app.use("/api/user/cover", upload.single("cover"), userRoutes )
     app.use("/api/user", userRoutes)
     app.use("/api/post", postRoutes)
 

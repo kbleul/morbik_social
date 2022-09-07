@@ -1,29 +1,33 @@
-import coverp from "../assets/profile/6.jpg"
-import pp from "../assets/profile/5.jpg"
+import { useAuthContext } from "../customHooks/useContext"
+import pp from "../assets/placeholder/black.png"
 
 const Hero = () => {
+
+  const  { user , dispatch } = useAuthContext()
+
+
   return (
     <section>
-        <img src={coverp} alt="cover" className="h-[70vh] w-full"/>
+        <img src={user.coverPicture === "" ?  pp : `/public/data/uploads/${user.coverPicture}` } alt="cover" className="h-[70vh] w-full"/>
 
         <div className="flex absolute top-[70%]  w-2/5 ml-[30%] text-white  bg-[rgba(0,0,0,.5)]">
-         <img className="w-64 h-64 rounded-[15rem] p-2" src={pp} alt="profile" />
+         <img className="w-64 h-64 rounded-[15rem] p-2" src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" />
          <div>
-            <h4 className="ml-[5%] mt-[25%] font-extrabold text-xl">Kibrom Leul</h4>
-            <p className="ml-[5%] px-[ 2% ] pt-[5%] pb-[10%]">A photographer with a love for nature. Work hard play hard !!!</p>
+            <h4 className="ml-[5%] mt-[25%] font-extrabold text-xl">{user.username_or_email}</h4>
+            <p className="ml-[5%] px-[ 2% ] pt-[5%] pb-[10%]">{user.disc}</p>
 
             <div className="flex justify-center items-center text-sm">
                 <div className="flex ml-[1%]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 50 50"><path fill="yellow" d="m25 42.5l-.8-.9C23.7 41.1 12 27.3 12 19c0-7.2 5.8-13 13-13s13 5.8 13 13c0 8.3-11.7 22.1-12.2 22.7l-.8.8zM25 8c-6.1 0-11 4.9-11 11c0 6.4 8.4 17.2 11 20.4c2.6-3.2 11-14 11-20.4c0-6.1-4.9-11-11-11z"/><path fill="currentColor" d="M25 24c-2.8 0-5-2.2-5-5s2.2-5 5-5s5 2.2 5 5s-2.2 5-5 5zm0-8c-1.7 0-3 1.3-3 3s1.3 3 3 3s3-1.3 3-3s-1.3-3-3-3z"/></svg> 
-                <p >Addis Ababa</p> </div>
+                <p >{user.city}</p> </div>
 
                 <div className="flex ml-[2%]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill="red" fill-rule="evenodd" d="m8 2.42l-.717-.737c-1.13-1.161-3.243-.777-4.01.72c-.35.685-.451 1.707.236 3.062C4.16 6.753 5.52 8.32 8 10.042c2.479-1.723 3.839-3.29 4.491-4.577c.687-1.355.587-2.377.236-3.061c-.767-1.498-2.88-1.882-4.01-.721L8 2.42Zm-.49 8.5c-10.78-7.44-3-13.155.359-10.063c.045.041.089.084.132.129c.043-.045.087-.088.132-.129c3.36-3.092 11.137 2.624.357 10.063l.235.468a.25.25 0 1 1-.448.224l-.008-.017c.008.11.02.202.037.29c.054.27.161.488.419 1.003c.288.578.235 1.15.076 1.629c-.157.469-.422.867-.588 1.115l-.004.007a.25.25 0 1 1-.416-.278c.168-.252.4-.6.533-1.003c.133-.396.163-.824-.049-1.246l-.013-.028c-.24-.48-.38-.758-.448-1.102a3.177 3.177 0 0 1-.052-.45l-.04.08a.25.25 0 1 1-.447-.224l.235-.468ZM6.013 2.06c-.649-.18-1.483.083-1.85.798c-.131.258-.245.689-.08 1.335c.063.244.414.198.487-.043c.21-.697.627-1.447 1.359-1.692c.217-.073.304-.337.084-.398Z"/></svg>
-                <p>Married</p></div>
+                <p>{user.relationship}</p></div>
 
                 <div className="flex ml-[4%] border-l-2">
          
-                <p className="ml-1 bg-slate-200 text-black" >Joined Oct 27 </p></div>
+                <p className="ml-1 bg-slate-200 text-black" >Joined {user.createdAt}</p></div>
 
             </div>
 

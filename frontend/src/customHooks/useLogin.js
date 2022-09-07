@@ -30,17 +30,16 @@ export const useLogin = () => {
             return null
         }
 
-        else { console.log("ola")
+        else {
             //save user to local storage
             localStorage.setItem("user" , JSON.stringify(json))
 
             // update auth context
             dispatch({ type : AUTH_ACTIONS.LOGIN , payload : json })
-
+            console.log(json)
           
             setisloading(false)
             return json
-
         }
     }
 

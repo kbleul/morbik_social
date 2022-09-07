@@ -1,6 +1,6 @@
 const router = require("express").Router()
 const requireAuth = require("../middleware/requireAuth")
-const { updateUser , updateProfilePic , deleteUser , getUser , followUser , unfollowUser } = require("../controllers/userController")
+const { updateUser , updateProfilePic , updateCoverPic , deleteUser , getUser , followUser , unfollowUser } = require("../controllers/userController")
 
 
   
@@ -10,7 +10,10 @@ const { updateUser , updateProfilePic , deleteUser , getUser , followUser , unfo
     router.use(requireAuth)
 
 //UPDATE USER PROFILE PIC
-router.put("/update/:id", updateProfilePic)
+router.put("/updateProfile/:id", updateProfilePic)
+
+//UPDATE USER COVER PIC
+router.put("/updateCover/:id", updateCoverPic)
 
 
 //UPDATE USER 

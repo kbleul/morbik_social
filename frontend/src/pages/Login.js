@@ -41,7 +41,7 @@ const Login = () => {
                       onChange={ e => set_username_or_passw(e.target.value) } />
 
                 <input className="w-3/5  ml-[20%] py-4 px-8 mt-8 rounded-full text-black" 
-                  type="text" value={password} min="6" placeholder="Password" 
+                  type="password" value={password} min="6" placeholder="Password" 
                     onChange={ e => set_password(e.target.value) }/>
 
                     { error && <p className="text-yellow-400 text-sm w-3/5 ml-[24%] pt-[1%]">! {error}</p>}
