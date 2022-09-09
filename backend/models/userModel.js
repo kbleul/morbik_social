@@ -46,17 +46,17 @@ const userSchema = new Schema({
     disc : {
         type : String,
         max: 50,
-        default : ""
+        default : "..."
     },
     country : {
         type : String,
         max: 50,
-        default : ""
+        default : "Unknown"
     },
     city : {
         type : String,
         max: 50,
-        default : ""
+        default : "Unknown"
     },
     relationship : {
         type : String,

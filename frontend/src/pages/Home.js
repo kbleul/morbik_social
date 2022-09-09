@@ -1,5 +1,5 @@
 
-import { useAuthContext } from "../customHooks/useContext"
+import { useAuthContext } from "../customHooks/useMyContext"
 
 import Hero from "../components/Hero"
 import { Users , Posts } from "../dummy"
@@ -22,7 +22,7 @@ const Home = () => {
 
       <div className="w-[30%] flex justify-evenly border-r-2 border-black">
         <p className="font-bold">{user.following.length} <span className="text-sm font-light">Following</span></p>
-        <p className="font-bold">{user.followers.length} <span className="text-sm font-light">Followers</span></p>
+        <p className="font-bold">{user.follower.length} <span className="text-sm font-light">Followers</span></p>
       </div>
       
       <p className="w-[70%] text-3xl text-center">Posts</p>

@@ -5,8 +5,7 @@ export const AuthContext = createContext()
 export const AUTH_ACTIONS = {
     "LOGIN" : "LOGIN",
     "LOGOUT" : "LOGOUT",
-    "UPDATE_PP" : "UPDATEPROFILEPICTURE",
-    "UPDATE_COVER" : "UPDATE_COVER"
+    "UPDATE_INFO" : "UPDATE_INFO",
 }
 
 const authReducer = ( state , action ) => {
@@ -18,11 +17,9 @@ const authReducer = ( state , action ) => {
         case AUTH_ACTIONS.LOGOUT :
             return { user : null }
 
-        case AUTH_ACTIONS.UPDATE_PP :
-            return { user : action.payload}
+        case AUTH_ACTIONS.UPDATE_INFO :
+            return { user : action.payload }
 
-        case AUTH_ACTIONS.UPDATE_COVER :
-            return {user : action.payload}
     }
 }
 

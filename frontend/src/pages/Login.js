@@ -59,7 +59,7 @@ const Login = () => {
 
         </section>
 
-        <section className="text-center col-span-1 ">
+        <section className="text-center col-span-1 bg-sky-700">
 
           <img src={bg1} className="h-[100vh] w-full"/>
 

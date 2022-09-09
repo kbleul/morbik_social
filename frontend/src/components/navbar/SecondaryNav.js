@@ -2,7 +2,7 @@ import { useState } from 'react'
 import pp from "../../assets/placeholder/black.png"
 
 import { AUTH_ACTIONS } from "../../contex/authContext"
-import { useAuthContext } from "../../customHooks/useContext"
+import { useAuthContext } from "../../customHooks/useMyContext"
 
 
 
@@ -34,7 +34,7 @@ const SecondaryNav = () => {
         </div>
 
         <div className="w-1/2 flex justify-end items-center">
-           <p className="w-4/5 justify-self-end text-white font-bold">{user.username_or_email}</p>
+           <p className="w-4/5 justify-self-end text-white font-bold text-end pr-[2%]">{user.username}</p>
            <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-10 h-10 rounded-full mr-16'/>
         </div>
 

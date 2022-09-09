@@ -1,8 +1,8 @@
 import {  useState } from 'react'
 
 import { AUTH_ACTIONS } from "../contex/authContext"
-import { useAuthContext } from "./useContext"
-import { useNewUserContext } from "./useContext"
+import { useAuthContext } from "./useMyContext"
+import { useNewUserContext } from "./useMyContext"
 
 export const useSignup = () => {
     const [error , seterror] = useState(null)

@@ -1,13 +1,41 @@
 
-import pp from "../assets/profile/2.jpg"
+import pp from "../assets/placeholder/black.png"
+import { useState } from "react"
+import { useAuthContext} from "../customHooks/useMyContext"
+import { usePostContext } from "../customHooks/useMyContext"
+
 
 const Post = () => {
+  const  { user , dispatch } = useAuthContext()
+  const  { post , dispatch : post_dispatch  } = useAuthContext()
+
+  const [ disc , set_disc ] = useState("")
+
+  const handleSubmit = async (e) => {
+        e.preventDefault()
+
+        const options = {
+          method : "POST",
+          body : JSON.stringify({ disc }),
+          headers : { "Authorization" : `Bearer ${user.token}`}
+        }
+
+        const sendpost = await fetch(`api/post/${user._id}`, options)
+
+        const json = await sendpost.json()
+
+        console.log(json)
+
+  }
+
+
   return (
     <div className="w-[90%] ml-[5%] mt-4 flex">
-        <img src={pp}  alt="profile" className='w-16 h-16 rounded-full'/>
+        <img src={user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`}  alt="profile" className='w-16 h-16 rounded-full'/>
         
-        <div className="ml-4 w-4/5">
-          <input value="" placeholder="What's on your mind ?" className="text-xl py-4 border-b-2 focus:outline-0 outline-0 w-full" />
+        <form onSubmit={e => handleSubmit(e)} enctype="multipart/form-data" className="ml-4 w-4/5">
+          <textarea value={disc} onClick= { e => set_disc(e.target.value) } placeholder="What's on your mind ?" className="text-xl py-4 border-b-2 focus:outline-0 outline-0 w-full" />
+          
           <div className="flex justify-between items-center mt-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="currentColor" d="M32 4H4a2 2 0 0 0-2 2v24a2 2 0 0 0 2 2h28a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2ZM4 30V6h28v24Z" className="clr-i-outline clr-i-outline-path-1"/><path fill="currentColor" d="M8.92 14a3 3 0 1 0-3-3a3 3 0 0 0 3 3Zm0-4.6A1.6 1.6 0 1 1 7.33 11a1.6 1.6 0 0 1 1.59-1.59Z" className="clr-i-outline clr-i-outline-path-2"/><path fill="currentColor" d="m22.78 15.37l-5.4 5.4l-4-4a1 1 0 0 0-1.41 0L5.92 22.9v2.83l6.79-6.79L16 22.18l-3.75 3.75H15l8.45-8.45L30 24v-2.82l-5.81-5.81a1 1 0 0 0-1.41 0Z" className="clr-i-outline clr-i-outline-path-3"/><path fill="none" d="M0 0h36v36H0z"/></svg>
 
@@ -17,7 +45,7 @@ const Post = () => {
 
             <button className="w-1/4 px-4  bg-yellow-400 hover:bg-yellow-300 text-black">Share</button>
           </div>
-        </div>
+        </form>
     </div>
   )
 }

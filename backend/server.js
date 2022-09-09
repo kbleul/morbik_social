@@ -33,16 +33,13 @@ const upload = multer({ storage: storage })
 const app = express()
 
 app.use("/public", express.static(path.join(__dirname, 'public')));
-// app.use(express.static('public')); 
 
     //middlewares
     app.use(express.json())
-   // app.use(helmet())
-
+    app.use(helmet())
 
     app.use((req , res , next) => { 
-        console.log(req.path, req.method , req.body)
-        
+        console.log(req.path, req.method , req.body)     
         next()
     })
 

@@ -3,12 +3,19 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const validator = require("validator")
 
+const prepareReturnObj =  (user ) => {
+    const returnObj = { username : user.username , email : user.email , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following }
+
+    return returnObj
+}
+
+
 //PUT - UPDATE USER 
 const updateUser = async ( req , res ) => {
     const userid = req.user
     const userparam_id = req.params.id
  
-   
+   console.log("asjdasdsak" , req.body)
     if( !mongoose.Types.ObjectId.isValid(userid._id)  || userid._id.toString() !== userparam_id)
         { return res.status(404).json({error: "User id not valid "}) }
 
@@ -27,26 +34,28 @@ const updateUser = async ( req , res ) => {
             req.body.password = hash
 
         } catch(error) {
-            {  res.status(404).json({error: "Change user info failed "}) }
+              res.status(404).json({error: "Change user password failed "}) 
         }
     }
 
 
        try {
+console.log("body " , req.body)
+       const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...req.body })
 
-       const user_json = await User.findOneAndUpdate({ _id : userid } , { ...req.body })
+       const updated_user = await User.findById({ _id : userparam_id })
+console.log(updated_user)
+       //create a safe json file that does not include password or //other fields
+     //  const {disc , city , country , relationship} = user_json
 
-       //create a safe json file that does not include password or other fields
-       const {disc , city , country , relationship} = user_json
+          res.status(200).json(prepareReturnObj(updated_user) )
 
-          res.status(200).json({disc , city , country , relationship})
-
-       } catch(error) {    res.status(404).json({error: "Change user info failed "}) }
+       } catch(error) {    res.status(404).json({error: error}) }
 }
 
 //PUT UPDATE PROFILE Picture
 const updateProfilePic = async ( req, res ) => {
-    console.log(req.img)
+    console.log(req.img , "olalallaal")
       const userparam_id = req.params.id
 
       try {
@@ -60,7 +69,7 @@ const updateProfilePic = async ( req, res ) => {
 }
 
 const updateCoverPic = async ( req , res ) => {
-    console.log(req.img)
+    console.log(req.img, "loaaa")
       const userparam_id = req.params.id
 
       try {

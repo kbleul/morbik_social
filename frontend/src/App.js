@@ -7,7 +7,7 @@ import Signup from "./pages/Signup"
 
 import { useState } from "react"
 
-import { useAuthContext } from "./customHooks/useContext"
+import { useAuthContext } from "./customHooks/useMyContext"
 
 
 function App() {

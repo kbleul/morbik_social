@@ -5,6 +5,8 @@ import './index.css';
 import App from './App';
 
 import  AuthContextProvider  from "./contex/authContext"
+import  PostContextProvider  from "./contex/postContext"
+
 import Newuser_ContextProvider from "./contex/newSignupContext"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -13,7 +15,9 @@ root.render(
     <Router>
       <AuthContextProvider >
         <Newuser_ContextProvider>
-          <App />
+          <PostContextProvider>
+            <App />
+           </PostContextProvider>
         </Newuser_ContextProvider>
       </AuthContextProvider>
     </Router>
