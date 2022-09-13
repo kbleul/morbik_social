@@ -4,10 +4,12 @@ import { useState } from "react"
 import { useAuthContext} from "../customHooks/useMyContext"
 import { usePostContext } from "../customHooks/useMyContext"
 
+import { POST_ACTIONS } from "../contex/postContext"
+
 
 const Post = () => {
   const  { user , dispatch } = useAuthContext()
-  const  { post , dispatch : post_dispatch  } = useAuthContext()
+  const  { dispatch : post_dispatch  } = usePostContext()
 
   const [ disc , set_disc ] = useState("")
   const [ file , set_file ] = useState(null)
@@ -47,8 +49,6 @@ console.log(user.token)
 
           console.log("image" , json)
 
-        
-
           options = {
             method : "PUT",
             headers : { 
@@ -65,8 +65,12 @@ console.log(user.token)
         console.log("body" , json_two)
 
           set_src(null)
-          set_file(null)  
+          set_file(null)
+          set_disc("")  
             console.log(json)
+
+      post_dispatch({ type : POST_ACTIONS.ADDPOST , payload : { ...json , desc : json_two.desc } })
+
 
       }
 
@@ -89,9 +93,14 @@ console.log(user.token)
 
         set_src(null)
         set_file(null)
+        set_disc("")  
+
+      post_dispatch({ type : POST_ACTIONS.ADDPOST , payload : json_two })
+
           console.log(json_two)
 
       }
+
         
   }
 

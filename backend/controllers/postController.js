@@ -1,7 +1,17 @@
 const Post = require("../models/postModel")
 const User = require("../models/userModel")
+const formatDistance = require('date-fns/formatDistance')
+
 
 const mongoose = require("mongoose")
+
+        //create a readable date
+const createReadableDate = (date) => {
+    const newdate = formatDistance(new Date(date),new Date());
+    
+    return newdate
+}
+
 
 
 const createPost = async(req ,res) => {
@@ -19,8 +29,16 @@ const createPost = async(req ,res) => {
     
 
     try {
-        const { _id , img , desc } = await newPost.save()
-        res.status(200).json({ _id , img , desc })
+        const { _id , userId , img , desc , likes , createdAt  } = await newPost.save()
+        const readabledate = await createReadableDate(createdAt)
+
+        const user =  await User.findById(userId)
+
+     //create a safe json file that does not include password or other fields
+     const { username , profilePicture} = user._doc
+
+
+        res.status(200).json({ _id , userId , username , profilePicture , img , desc , likes , date : readabledate })
     } catch(error) { res.status(500).json(error) }
     
 }

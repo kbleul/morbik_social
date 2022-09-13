@@ -1,15 +1,17 @@
 
 import Post from "../components/Post"
-import { Posts } from "../dummy"
 import Postcard from "../components/Postcard"
-import { useNewUserContext } from "../customHooks/useMyContext"
 
+import { useNewUserContext } from "../customHooks/useMyContext"
+import { usePostContext } from "../customHooks/useMyContext"
 
 import AddDetails from "../components/AddDetails"
 
 
 const Feed = () => {
     const  { isnew  } = useNewUserContext()
+  const  { feedposts , dispatch : post_dispatch  } = usePostContext()
+
 
   return (
     <article>
@@ -27,17 +29,11 @@ const Feed = () => {
 
       <section className="grid grid-cols-2 gap-1">
         <div className="h-[100vh] overflow-hidden hover:overflow-y-scroll border-t-2 border-orange-500 mt-2">
-          { Posts.map(post => (
-            <Postcard key={post.id} post={post} />
+          { feedposts.map(post => (
+            <Postcard key={post._id} post={post} />
           ))}
          </div>
-
-          <div className="h-[100vh] overflow-hidden hover:overflow-y-scroll border-t-2 border-green-600 mt-2">
-          { Posts.reverse().map(post => (
-            <Postcard key={post.id} post={post} issuggestion={true} />
-            ))
-          }
-          </div>
+        
       </section>
     </article>
     }

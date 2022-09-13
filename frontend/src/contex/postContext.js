@@ -7,16 +7,20 @@ export const POST_ACTIONS = {
     "DELETEPOST" : "DELETEPOST",
 }
 
-const postReducer = () => {
+const postReducer = ( state , action ) => {
     
+    switch(action.type) {
+        case POST_ACTIONS.ADDPOST :
+            return [ action.payload  , ...state ]
+    }
 }
 
 
 const PostContextProvider = ({ children }) => {
 
-    const [ state , dispatch ] = useReducer(postReducer , [])
+    const [ feedposts , dispatch ] = useReducer(postReducer , [])
 
-    return( <PostContext.Provider value = { { ... state , dispatch } }>
+    return( <PostContext.Provider value = { { feedposts , dispatch } }>
             { children }
         </PostContext.Provider> )
 }
