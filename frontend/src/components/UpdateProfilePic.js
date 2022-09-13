@@ -54,7 +54,7 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
             onChange={e => {
               set_file(e.target.files[0])
               getImgData(e.target.files[0]);
-          }  }/>
+          } } />
 
           <div className="w-1/2 ml-[25%] flex justify-end items-center">
             { src ? 

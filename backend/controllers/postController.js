@@ -5,15 +5,23 @@ const mongoose = require("mongoose")
 
 
 const createPost = async(req ,res) => {
-    const newPost = new Post(req.body)
 
-    if( !mongoose.Types.ObjectId.isValid(newPost.userId) || newPost.userId !== req.user._id.toString() ) 
+    console.log(req.user._id.toString() , req.img , req.body )
+
+    if( !mongoose.Types.ObjectId.isValid(req.user._id.toString())  ) 
                { return res.status(404).json({error: "User id is not valid"}) }
 
+         let obj = req.img ?  { userId : req.user._id.toString() , img : req.img   } :
+                                 { userId : req.user._id.toString() , desc : req.body.desc }
+
+            
+        const newPost = new Post(obj)
+    
+
     try {
-        const savedPost = await newPost.save()
-        res.status(200).json(savedPost)
-    } catch(error) { req.status(500).json(error) }
+        const { _id , img , desc } = await newPost.save()
+        res.status(200).json({ _id , img , desc })
+    } catch(error) { res.status(500).json(error) }
     
 }
 
@@ -32,8 +40,8 @@ const updatePost = async (req , res ) => {
         { res.status(403).json("You are not authorized to update this post") }
 
 
-            await post.updateOne({ $set : req.body })
-                res.status(200).json("New post added")
+         await post.updateOne({ $set : req.body })
+                res.status(200).json(req.body)
 
     } catch(error) {
         res.status(500).json(error)

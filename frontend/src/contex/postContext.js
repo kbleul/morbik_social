@@ -7,6 +7,10 @@ export const POST_ACTIONS = {
     "DELETEPOST" : "DELETEPOST",
 }
 
+const postReducer = () => {
+    
+}
+
 
 const PostContextProvider = ({ children }) => {
 

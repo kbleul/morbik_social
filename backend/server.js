@@ -60,7 +60,10 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )
     app.use("/api/user/cover", upload.single("cover"), userRoutes )
     app.use("/api/user", userRoutes)
-    app.use("/api/post", postRoutes)
+    app.use("/api/share/image", upload.single("share") , postRoutes)
+    app.use("/api/share" , postRoutes)
+    app.use("/api/share", postRoutes)
+
 
 
 
