@@ -1,4 +1,4 @@
-import { Users } from "../dummy"
+import avatar from "../assets/placeholder/black.png"
 
 const Postcard = ({ post , issuggestion , is_mypost }) => {
 
@@ -13,12 +13,12 @@ const Postcard = ({ post , issuggestion , is_mypost }) => {
     { !is_mypost && <section>
       <div className="flex items-center justify-between ">
         <div className="flex justify-between items-center">
-          <img src={"/public/data/uploads/" +post.profilePicture} alt={post.username} className='w-10 h-10 rounded-full'/>
+          <img src={ post.userProfilePicture === "" ? avatar : `/public/data/uploads/${post.userProfilePicture}` } alt={post.username} className='w-10 h-10 rounded-full'/>
           <h5 className="font-bold ml-2 font-serif">{post.username}</h5>
 
           {issuggestion && <button className="ml-4 text-[crimson]">+ Follow</button>}
         </div>
-          <p className="text-gray-400 text-sm">{post.date}</p>
+          <p className="text-gray-400 text-sm">{post.createdAt}</p>
       </div>
 
       <p className={ post.img === "" ? "p-2 max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll" : ""}>{post.desc}</p>
@@ -30,7 +30,6 @@ const Postcard = ({ post , issuggestion , is_mypost }) => {
       <div className={is_mypost ? "flex justify-between w-[80%] ml-[10%]" : "flex justify-between px-8 pt-4"}>
           <div className="flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill="currentColor" d="m8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385c.92 1.815 2.834 3.989 6.286 6.357c3.452-2.368 5.365-4.542 6.286-6.357c.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/></svg>
-              <p className="ml-2">{post.likes.length}</p>
           </div>
 
           <div className="flex items-center justify-center">

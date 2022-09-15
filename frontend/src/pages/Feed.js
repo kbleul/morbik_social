@@ -1,9 +1,12 @@
 
+import { useEffect } from "react"
+
 import Post from "../components/Post"
 import Postcard from "../components/Postcard"
 
 import { useNewUserContext } from "../customHooks/useMyContext"
 import { usePostContext } from "../customHooks/useMyContext"
+import { useFetchPosts } from "../customHooks/useFetchPosts"
 
 import AddDetails from "../components/AddDetails"
 
@@ -11,6 +14,10 @@ import AddDetails from "../components/AddDetails"
 const Feed = () => {
     const  { isnew  } = useNewUserContext()
   const  { feedposts , dispatch : post_dispatch  } = usePostContext()
+
+  const { fetchPosts , post_isloading , post_error } = useFetchPosts()
+
+  useEffect(() => { fetchPosts() }, [])
 
 
   return (

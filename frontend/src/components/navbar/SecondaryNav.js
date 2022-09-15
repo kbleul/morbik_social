@@ -2,13 +2,18 @@ import { useState } from 'react'
 import pp from "../../assets/placeholder/black.png"
 
 import { AUTH_ACTIONS } from "../../contex/authContext"
+import { POST_ACTIONS } from "../../contex/postContext"
+
 import { useAuthContext } from "../../customHooks/useMyContext"
+import { usePostContext } from "../../customHooks/useMyContext"
 
 
 
 const SecondaryNav = () => {
 
   const { user , dispatch } = useAuthContext()
+  const {  dispatch : post_dispatch   } = usePostContext()
+
 
   const [ menuon , set_menuon] = useState(false)
 
@@ -17,6 +22,7 @@ const SecondaryNav = () => {
       localStorage.removeItem("user")
  // update auth context
      dispatch({ type : AUTH_ACTIONS.LOGOUT })
+     post_dispatch({ type : POST_ACTIONS.CLEAR })
     }
 
   return (<article>

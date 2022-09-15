@@ -62,7 +62,7 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
     app.use("/api/user", userRoutes)
     app.use("/api/share/image", upload.single("share") , postRoutes)
     app.use("/api/share" , postRoutes)
-    app.use("/api/share", postRoutes)
+    app.use("/api/posts", postRoutes)
 
 
 
