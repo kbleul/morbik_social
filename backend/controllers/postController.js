@@ -12,8 +12,6 @@ const createReadableDate = (date) => {
     return newdate
 }
 
-
-
 const createPost = async (req, res) => {
 
 
@@ -22,8 +20,18 @@ const createPost = async (req, res) => {
     const user = await User.findById(req.user._id.toString())
 
     let obj = req.img ? 
-        { userId: req.user._id.toString(), img: req.img , userProfilePicture : user.profilePicture } :
-        { userId: req.user._id.toString(), desc: req.body.desc , userProfilePicture : user.profilePicture  }
+                    { 
+                        userId: req.user._id.toString(), 
+                        username : user.username, 
+                        userProfilePicture : user.profilePicture ,
+                        img: req.img , 
+                    } :
+                    { 
+                        userId: req.user._id.toString(), 
+                        username : user.username, 
+                        userProfilePicture : user.profilePicture ,
+                        desc: req.body.desc , 
+                    }
 
 
     const newPost = new Post(obj)
@@ -37,7 +45,7 @@ const createPost = async (req, res) => {
         const { username, profilePicture } = user._doc
 
 
-        res.status(200).json({ _id, userId, userProfilePicture, username, profilePicture, img, desc, likes, date: readabledate })
+        res.status(200).json({ _id, userId, username, userProfilePicture, profilePicture, img, desc, likes, createdAt: readabledate })
     } catch (error) { res.status(500).json(error) }
 
 }
@@ -89,23 +97,27 @@ const deletePost = async (req, res) => {
 
 const likePost = async (req, res) => {
 
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) { return res.status(404).json({ error: "Post id is not valid" }) }
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+         return res.status(404).json({ error: "Post id is not valid" }) }
 
     try {
+
         const post = await Post.findById(req.params.id)
 
         if (!post.likes.includes(req.user._id.toString())) {
-            await Post.updateOne({ $push: { likes: req.user._id.toString() } })
-            res.status(200).json("Liked post")
+            
+           let result =  await Post.findByIdAndUpdate({ _id: req.params.id },{ $push: { likes: req.user._id.toString() } })
+
+            res.status(200).json({"status" : "Liked" , "user" : req.user._id.toString() })
         }
         else {
-            await Post.updateOne({ $pull: { likes: req.user._id.toString() } })
-            res.status(200).json("Disliked post")
+            let result =  await Post.findByIdAndUpdate({ _id: req.params.id },{ $pull: { likes: req.user._id.toString() } })
+
+            res.status(200).json({"status" : "Disliked" , "user" : req.user._id.toString()})
+
         }
 
-    } catch (error) {
-        res.status(500).json(error)
-    }
+    } catch (error) { res.status(500).json(error) }
 
 }
 
@@ -124,15 +136,13 @@ const getPost = async (req, res) => {
 
 const getTimelinePost = async (req, res) => {
     let currentuser
-    let friendsposts_obj  = []
+    let friendsposts_arr  = []
     let temparr  = []
-
-    let fposts = []
 
     try {
         currentuser = await User.findById(req.user._id.toString());
 
-        const userposts = await Post.find({ userId: currentuser._id }).sort({ date: 'desc' });
+        const userposts = await Post.find({ userId: currentuser._id }).sort({ date: 1 });
 
         const friendsposts = await Promise.all(
             currentuser.following.map(friend => {
@@ -159,7 +169,7 @@ const getTimelinePost = async (req, res) => {
           
 
             const date = createReadableDate(createdAt)
-            friendsposts_obj.push({ _id, userId, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+            friendsposts_arr.push({ _id, userId, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
         })
 
         userposts.forEach(item => {
@@ -169,15 +179,48 @@ const getTimelinePost = async (req, res) => {
             if(item.userProfilePicture) 
             { userProfilePicture = item.userProfilePicture  }
 
-            const { _id, userId, desc, img, likes, createdAt } = item
+            const { _id, userId, username, desc, img, likes, createdAt } = item
 
             const date = createReadableDate(createdAt)
-            friendsposts_obj.push({ _id, userId, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+            friendsposts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
         })
 
-      res.status(200).json(friendsposts_obj)
+      res.status(200).json(friendsposts_arr.reverse())
 
     } catch (error) { res.status(500).json({ error: error }) }
 }
 
-module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost }
+const getSuggestedPost = async (req, res) => {
+    let currentuser
+    let sugg_posts_arr  = []
+
+    try {
+        currentuser = await User.findById(req.user._id.toString());
+
+        // const userposts = await Post.find({ userId: currentuser._id }).sort({ date: 'desc' });
+
+        let allposts = await Post.find({}).limit(60)
+
+     allposts = allposts.filter(tempP =>  currentuser._id.toString() !== tempP.userId && !currentuser.following.includes(tempP.userId) )
+
+     allposts.forEach(tempP => {
+        let userProfilePicture = ""
+
+        if(tempP.userProfilePicture) 
+        { userProfilePicture = tempP.userProfilePicture  }
+
+
+          const { _id, userId, username, desc, img, likes, createdAt } = tempP
+        
+
+          const date = createReadableDate(createdAt)
+          sugg_posts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+     })
+          
+     res.status(200).json(sugg_posts_arr.reverse())
+
+
+    } catch (error) { res.status(500).json({ error: error }) }
+}
+
+module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost ,getSuggestedPost }

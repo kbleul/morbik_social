@@ -45,9 +45,7 @@ console.log("body " , req.body)
 
        const updated_user = await User.findById({ _id : userparam_id })
 console.log(updated_user)
-       //create a safe json file that does not include password or //other fields
-     //  const {disc , city , country , relationship} = user_json
-
+    
           res.status(200).json(prepareReturnObj(updated_user) )
 
        } catch(error) {    res.status(404).json({error: error}) }

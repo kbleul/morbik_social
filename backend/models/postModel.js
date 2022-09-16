@@ -9,6 +9,10 @@ const postSchema = new Schema({
         type : String,
         required : true
     },
+    username : {
+        type: String,
+        required: true
+    },
     userProfilePicture : {
         type : String,
         required : true

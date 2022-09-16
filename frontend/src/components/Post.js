@@ -32,6 +32,8 @@ const Post = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if (file && disc === "" ) {set_disc("...")}
+    
     if (file && disc !== "") {
       const formData = new FormData();
       formData.append('share', file);
