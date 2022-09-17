@@ -2,12 +2,21 @@ const User = require("../models/userModel")
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt")
 const validator = require("validator")
+const formatDistance = require('date-fns/formatDistance')
+
+        //create a readable date
+const createReadableDate = (date) => {
+    const newdate = formatDistance(new Date(date),new Date());
+    
+    return newdate
+}
 
 const prepareReturnObj =  (user ) => {
-    const returnObj = { username : user.username , email : user.email , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following }
+    const returnObj = { username : user.username , email : user.email , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
 
     return returnObj
 }
+
 
 
 //PUT - UPDATE USER 
@@ -182,7 +191,54 @@ const unfollowUser = async ( req , res ) => {
         else {  res.status(403).json("Action on yourself")  }
 }
 
+const fetchRelation = async ( type, req, res ) => {
+    const finalarr = []
+    let  holder = []
+
+    if(type === "followers")
+     { 
+        const { followers } = await User.findById({_id : req.user._id.toString()})
+        holder = [...followers ]
+    }
+    else {
+        const { following } = await User.findById({_id : req.user._id.toString()})
+        holder = [...following ]
+    }
+       
+
+    const userarr = holder.filter(tempU => 
+                     mongoose.Types.ObjectId.isValid(tempU) )
+
+    try {
+     const fetchresults = await Promise.all(
+        userarr.map(user => {
+            return User.findById({ _id : user})
+        })
+     )
+
+     fetchresults.forEach(user => 
+        { finalarr.push(prepareReturnObj(user)) })
+
+    res.status(200).json(finalarr)
+
+    } catch(error) { res.status(400).jso  (error) }
+}
+
+const getFollowers =  ( req , res ) => { fetchRelation("followers", req , res)  }
+
+const getFollowing =  ( req , res ) => { fetchRelation("following", req , res)  }
+
+
+
 
 module.exports = {
-    updateUser, updateProfilePic , updateCoverPic ,deleteUser, getUser, followUser, unfollowUser 
+    updateUser, 
+    updateProfilePic , 
+    updateCoverPic ,                    
+    deleteUser, 
+    getUser, 
+    followUser, 
+    unfollowUser ,
+    getFollowers, 
+    getFollowing
 }

@@ -1,9 +1,6 @@
 const router = require("express").Router()
 const requireAuth = require("../middleware/requireAuth")
-const { updateUser , updateProfilePic , updateCoverPic , deleteUser , getUser , followUser , unfollowUser } = require("../controllers/userController")
-
-
-  
+const { updateUser , updateProfilePic , updateCoverPic , deleteUser , getUser , followUser , unfollowUser, getFollowers, getFollowing } = require("../controllers/userController")
 
 
 //run authm middleware
@@ -21,6 +18,12 @@ router.put("/:id", updateUser)
 
 //DELETE USER 
 router.delete("/:id", deleteUser)
+
+//GET USER FOLLOWERS
+router.get("/followers", getFollowers)
+
+//GET USER FOLLOWING
+router.get("/following", getFollowing)
 
 //GET USER
 router.get("/:id", getUser)

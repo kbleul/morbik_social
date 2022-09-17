@@ -32,6 +32,13 @@ const suggestedReducer = ( state , action ) => {
     }
 }
 
+const userPostReducer = ( state , action ) => {
+    switch(action.type) {
+        case POST_ACTIONS.GETALL :
+            return action.payload
+    }
+}
+
 
 const PostContextProvider = ({ children }) => {
 
@@ -39,8 +46,10 @@ const PostContextProvider = ({ children }) => {
 
     const [ feedposts_suggested , dispatch_suggested ] = useReducer(suggestedReducer , [])
 
+    const [ userposts, dispatch_userposts ] = useReducer(userPostReducer , [])
 
-    return( <PostContext.Provider value = { { feedposts , dispatch , feedposts_suggested , dispatch_suggested } }>
+
+    return( <PostContext.Provider value = { { feedposts , dispatch , feedposts_suggested , dispatch_suggested , userposts, dispatch_userposts } }>
             { children }
         </PostContext.Provider> )
 }

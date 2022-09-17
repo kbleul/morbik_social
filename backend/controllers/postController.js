@@ -197,8 +197,6 @@ const getSuggestedPost = async (req, res) => {
     try {
         currentuser = await User.findById(req.user._id.toString());
 
-        // const userposts = await Post.find({ userId: currentuser._id }).sort({ date: 'desc' });
-
         let allposts = await Post.find({}).limit(60)
 
      allposts = allposts.filter(tempP =>  currentuser._id.toString() !== tempP.userId && !currentuser.following.includes(tempP.userId) )
@@ -223,4 +221,33 @@ const getSuggestedPost = async (req, res) => {
     } catch (error) { res.status(500).json({ error: error }) }
 }
 
-module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost ,getSuggestedPost }
+const getUserPost = async (req, res) => {
+    try {
+        let finalarr = []
+        const currentuser = await User.findById(req.user._id.toString());
+
+        const myposts = await Post.find({ userId : currentuser._id})
+
+
+        myposts.forEach(post => {
+        const { _id, userId, desc, img, likes, createdAt } = post
+        const date = createReadableDate(createdAt)
+
+        let userProfilePicture = username = ""
+
+            if(post.userProfilePicture) 
+              { userProfilePicture = post.userProfilePicture  }
+              
+            if(post.username) 
+              { username = post.username  }
+
+            finalarr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+        })
+
+        res.status(200).json(finalarr.reverse())
+
+    } catch(error) { res.status(500).json({ error: error }) }
+}
+
+
+module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost ,getSuggestedPost , getUserPost }
