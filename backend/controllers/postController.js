@@ -15,7 +15,8 @@ const createReadableDate = (date) => {
 const createPost = async (req, res) => {
 
 
-    if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) { return res.status(404).json({ error: "User id is not valid" }) }
+    if (!mongoose.Types.ObjectId.isValid(req.user._id.toString())) 
+            { return res.status(404).json({ error: "User id is not valid" }) }
 
     const user = await User.findById(req.user._id.toString())
 
@@ -23,13 +24,13 @@ const createPost = async (req, res) => {
                     { 
                         userId: req.user._id.toString(), 
                         username : user.username, 
-                        userProfilePicture : user.profilePicture ,
+                        userProfilePicture :  user.profilePicture  ,
                         img: req.img , 
                     } :
                     { 
                         userId: req.user._id.toString(), 
                         username : user.username, 
-                        userProfilePicture : user.profilePicture ,
+                        userProfilePicture :  user.profilePicture  ,
                         desc: req.body.desc , 
                     }
 
@@ -38,8 +39,8 @@ const createPost = async (req, res) => {
 
     try {
         const { _id, userId, userProfilePicture, img, desc, likes, createdAt } = await newPost.save()
+        
         const readabledate = await createReadableDate(createdAt)
-
 
         //create a safe json file that does not include password or other fields
         const { username, profilePicture } = user._doc
@@ -160,26 +161,35 @@ const getTimelinePost = async (req, res) => {
          temparr.forEach(item => {
 
         let userProfilePicture = ""
+        let username = "Unknown"
 
           if(item.userProfilePicture) 
           { userProfilePicture = item.userProfilePicture  }
+
+          if(item.username) 
+          { username = item.username  }
 
 
             const { _id, userId, desc, img, likes, createdAt } = item
           
 
             const date = createReadableDate(createdAt)
-            friendsposts_arr.push({ _id, userId, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
+            friendsposts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
         })
 
         userposts.forEach(item => {
 
              userProfilePicture = ""
+             let username = "Unknown"
 
             if(item.userProfilePicture) 
             { userProfilePicture = item.userProfilePicture  }
 
-            const { _id, userId, username, desc, img, likes, createdAt } = item
+            if(item.username) 
+            { username = item.username  }
+  
+
+            const { _id, userId, desc, img, likes, createdAt } = item
 
             const date = createReadableDate(createdAt)
             friendsposts_arr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
@@ -203,12 +213,16 @@ const getSuggestedPost = async (req, res) => {
 
      allposts.forEach(tempP => {
         let userProfilePicture = ""
+        let username = "Unknown"
 
         if(tempP.userProfilePicture) 
         { userProfilePicture = tempP.userProfilePicture  }
 
+        if(tempP.username) 
+        { username = tempP.username  }
 
-          const { _id, userId, username, desc, img, likes, createdAt } = tempP
+
+          const { _id, userId, desc, img, likes, createdAt } = tempP
         
 
           const date = createReadableDate(createdAt)
@@ -221,25 +235,27 @@ const getSuggestedPost = async (req, res) => {
     } catch (error) { res.status(500).json({ error: error }) }
 }
 
-const getUserPost = async (req, res) => {
+//utitlity function
+const getPosts = async (userid , req, res) => {
     try {
         let finalarr = []
-        const currentuser = await User.findById(req.user._id.toString());
+        const currentuser = await User.findById(userid);
 
         const myposts = await Post.find({ userId : currentuser._id})
-
 
         myposts.forEach(post => {
         const { _id, userId, desc, img, likes, createdAt } = post
         const date = createReadableDate(createdAt)
 
-        let userProfilePicture = username = ""
+        let userProfilePicture = ""
+        let username = "Unknown"
 
             if(post.userProfilePicture) 
-              { userProfilePicture = post.userProfilePicture  }
-              
+            { userProfilePicture = post.userProfilePicture  }
+
             if(post.username) 
-              { username = post.username  }
+            { username = post.username  }
+              
 
             finalarr.push({ _id, userId, username, userProfilePicture, desc, img, likes, createdAt: date, profilePicture: currentuser.profilePicture })
         })
@@ -250,4 +266,15 @@ const getUserPost = async (req, res) => {
 }
 
 
-module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost ,getSuggestedPost , getUserPost }
+const getUserPost = async (req, res) => { console.log("USER" ,req.user._id)
+  getPosts( req.user._id.toString() , req, res )
+}
+
+
+const getOthersPost = async ( req , res ) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) { return res.status(404).json({ error: "Post id is not valid" }) }
+
+    getPosts( req.params.id , req, res )
+}
+
+module.exports = { createPost, updatePost, deletePost, likePost, getPost, getTimelinePost ,getSuggestedPost , getOthersPost, getUserPost }

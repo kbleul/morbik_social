@@ -12,7 +12,7 @@ const createReadableDate = (date) => {
 }
 
 const prepareReturnObj =  (user ) => {
-    const returnObj = { username : user.username , email : user.email , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
+    const returnObj = { _id : user._id , username : user.username , profilePicture : user.profilePicture , coverPicture : user.coverPicture, email : user.email , disc : user.disc , city : user.city , country : user.country , relationship : user.relationship , follower : user.followers , following : user.following , createdAt : createReadableDate(user.createdAt) }
 
     return returnObj
 }
@@ -116,19 +116,18 @@ const deleteUser = async ( req , res ) => {
 //GET single user
 const getUser = async ( req , res ) => {
     const {id} = req.params
-
+console.log("id",id)
        if( !mongoose.Types.ObjectId.isValid(id) ) 
             return res.status(404).json({error: "User id is not valid "})
 
 
-    const user =  await User.findById(id)
-     //create a safe json file that does not include password or other fields
-     const {password , createdAt , updatedAt , ...safe_json} = user._doc
+    const user =  await User.findById({_id : id})
+  
 
 
         if(!user) return res.status(404).json({error: "User does not exist"})
 
-        res.status(200).json(safe_json)
+        res.status(200).json(prepareReturnObj(user))
 }
 
 //UPDATE - FOLLOW user
@@ -148,7 +147,7 @@ const followUser = async ( req , res ) => {
                     await user.updateOne({ $push : { followers : currentuser }})
                     await currentuser_obj.updateOne({ $push : { following : user._id }})
 
-                    res.status(200).json("Followed user")
+                    res.status(200).json({status :"Followed"})
                     return
                 }
 
@@ -179,7 +178,7 @@ const unfollowUser = async ( req , res ) => {
                     await user.updateOne({ $pull : { followers : currentuser }})
                     await currentuser_obj.updateOne({ $pull : { following : user._id }})
 
-                    res.status(200).json("Unfollowed user")
+                    res.status(200).json({status : "Unfollowed"})
                     return
                 }
 
@@ -191,20 +190,20 @@ const unfollowUser = async ( req , res ) => {
         else {  res.status(403).json("Action on yourself")  }
 }
 
-const fetchRelation = async ( type, req, res ) => {
+//utitlity FUNCTION
+const fetchRelation = async ( type, userid, req, res ) => {
     const finalarr = []
     let  holder = []
 
     if(type === "followers")
      { 
-        const { followers } = await User.findById({_id : req.user._id.toString()})
+        const { followers } = await User.findById({_id : userid})
         holder = [...followers ]
     }
     else {
-        const { following } = await User.findById({_id : req.user._id.toString()})
+        const { following } = await User.findById({_id : userid})
         holder = [...following ]
     }
-       
 
     const userarr = holder.filter(tempU => 
                      mongoose.Types.ObjectId.isValid(tempU) )
@@ -221,13 +220,59 @@ const fetchRelation = async ( type, req, res ) => {
 
     res.status(200).json(finalarr)
 
-    } catch(error) { res.status(400).jso  (error) }
+    } catch(error) { res.status(400).json(error) }
 }
 
-const getFollowers =  ( req , res ) => { fetchRelation("followers", req , res)  }
 
-const getFollowing =  ( req , res ) => { fetchRelation("following", req , res)  }
+//GET FOLLOWERS LIST
+const getFollowers =  ( req , res ) => { fetchRelation("followers", req.user._id.toString(), req , res)  }
 
+//GET FOLLOWING LIST
+const getFollowing =  ( req , res ) => { 
+    fetchRelation("following", req.user._id.toString() , req , res)  }
+
+//GET FRIENDS FOLLOWERS
+const getFriendFollowers = ( req , res ) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) 
+    { return res.status(404).json({ error: "Post id is not valid" }) }
+
+    fetchRelation("followers", req.params.id , req , res)
+}
+
+//GET FRIENDS FOLLOWING
+const getFriendFollowing = ( req , res ) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) 
+    { return res.status(404).json({ error: "Post id is not valid" }) }
+
+    fetchRelation("following", req.params.id , req , res)
+}
+
+
+//GET SEARCH SUGGESTION
+const getSearch = async ( req , res ) => {
+
+    const word = req.body.word
+    let finalarr = []
+
+    console.log("istrue",word === "")
+
+    if(word === "" || word === " ") {
+        res.status(200).json([])
+    }
+
+    try {
+        const users = await User.find({"username": {
+                        "$regex": word,
+                        "$options": "i"  }}).limit(10)
+
+    users.filter(user => user._id.toString() !== req.user._id.toString()).forEach(tempu => finalarr.push({id : tempu._id , username : tempu.username}))
+
+
+        res.status(200).json(finalarr)
+    
+    } catch(error) { res.status(401).json(error) }
+     
+}
 
 
 
@@ -240,5 +285,8 @@ module.exports = {
     followUser, 
     unfollowUser ,
     getFollowers, 
-    getFollowing
+    getFollowing,
+    getFriendFollowers , 
+    getFriendFollowing ,
+    getSearch
 }

@@ -22,7 +22,7 @@ export const useFetchPosts = () => {
         set_suggerror(null)
         set_postisloading(true)
         set_suggisloading(true)
-
+console.log("token",user.token)
         const options = {
             method : "GET",
             headers : { "Authorization" : `Bearer ${user.token}` }

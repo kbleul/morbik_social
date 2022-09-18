@@ -1,21 +1,22 @@
 import Navbar from "./components/navbar/Navbar"
+import { AUTH_ACTIONS } from "./contex/authContext"
+
 import {  Routes , Route , Navigate } from "react-router-dom"
 import Feed from "./pages/Feed"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 
-import { useState } from "react"
 
 import { useAuthContext } from "./customHooks/useMyContext"
 
-
 function App() {
-    const [shownav , set_shownav] = useState(true)
-    const { user } = useAuthContext()
+
+  const { user  } = useAuthContext()
+  
 
   return (
-    <div className="relative">
+    <div className="relative" >
 
        { user && <Navbar />}
 
@@ -25,7 +26,9 @@ function App() {
             <Route path="/login" element= { !user ?   <Login /> : <Navigate to="/" /> } />
             <Route path="/signup" element= { !user ?  <Signup /> : <Navigate to="/" />  } />
 
-            <Route path="/myhome" element= { user ?  <Home /> : <Navigate to="/login" /> } />
+            <Route path="/myhome/:id" element= { user ?  <Home /> : <Navigate to="/login" /> } />
+
+     
           </Routes>
   
     </div>
@@ -33,3 +36,8 @@ function App() {
 }
 
 export default App;
+
+/*
+
+       <Route path="/myhome/:id" element= { user ?  <Home /> : <Navigate to="/login" /> } />
+*/

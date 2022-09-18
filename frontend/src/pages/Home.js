@@ -1,5 +1,7 @@
 
 import { useEffect , useState } from "react"
+import { useParams, Link } from "react-router-dom"
+
 import avatar from "../assets/placeholder/black.png"
 
 import { useAuthContext , usePostContext } from "../customHooks/useMyContext"
@@ -11,39 +13,68 @@ import Postcard from "../components/Postcard"
 const Home = () => {
 
   const  { user  } = useAuthContext()
-  const  { feedposts , dispatch , dispatch_userposts} = usePostContext()
+  const { id } = useParams();
+
+  const  { userposts , dispatch , dispatch_userposts} = usePostContext()
+  const [ currentPerson , set_currentPerson ] = useState(null)
 
   const [ relationlist , set_relationlist ] = useState([])
-  const [relation_type , set_relation_type] = useState("followers")
+  const [relation_type , set_relation_type] = useState("following")
 
-  const fetchPost = async () => { console.log("lll")
+  const getUser = async (userid) => {
     const options = {
       method : "GET",
       headers : { "Authorization" : `Bearer ${user.token}` }
     }
 
-    const getpost = await fetch(`api/posts/current`, options)
+    const fetchuser = await fetch(`api/user/${userid}` , options)
+
+    const json = await fetchuser.json()
+
+    if(fetchuser.ok) {
+      set_currentPerson(json)
+      window.scrollTo(0, 0);
+    }
+
+}
+
+  const fetchPost = async () => { 
+    const options = {
+      method : "GET",
+      headers : { "Authorization" : `Bearer ${user.token}` }
+    }
+
+    const url = id !== user._id ?
+                `api/posts/current/${id}` : `api/posts/current`
+    const getpost = await fetch(url, options)
 
     let json = await getpost.json()
-    console.log(getpost)
+
+    console.log("json" , json)
 
     if(getpost.ok) {
       dispatch_userposts({ type : POST_ACTIONS.GETALL , payload : json })
     }
+
+   // fetchRelationships("following")
+
   }
 
   const fetchRelationships = async (type) => {
-      console.log(type)
     const options = {
           method : "GET",
           headers: { "Authorization" : `Bearer ${user.token}` },
     }
 
-        const response = await fetch(`api/${type}`, options)
+        const url = id !== user._id ? `api/${type}/${id}` : `api/${type}`
+        console.log("url",url)
+        const response = await fetch( url , options)
 
         const json = await response.json()
 
+console.log("rel,",response)
         if(response.ok) { set_relationlist(json) }
+        
 
         set_relation_type(type)
 
@@ -51,24 +82,38 @@ const Home = () => {
 
   //get followers and following list
 
-  useEffect(() => { 
-    fetchPost()
-    fetchRelationships("following")
-  }, [])
+  useEffect(() => { console.log("run")
+
+
+    if(id !== user._id) {  
+      console.log("iddd", id)
+      getUser(id)  }
+    else { set_currentPerson(user) }
+
+  fetchRelationships("following")
+       fetchPost()
+
+  }, [id])
+
+  useEffect(() => {
+
+  },[currentPerson])
 
 
   return (<main>
+{currentPerson && <article>
     <article className="mt-from-nav relative">
-     <Hero />
+      <Hero user={currentPerson}/>
     </article>
+
     <section className="bg-[#f4f4f4] mt-[25vh]">
     <div className="flex items-center font-content-spliter">
 
       <div className="w-[30%] flex justify-evenly border-r-2 border-black">
-        <p onClick={() => fetchRelationships("following")}className={ relation_type === "following" ? "font-bold w-1/2 text-center border-b-2 border-gray-400 mx-2 cursor-pointer" : "font-bold w-1/2 text-center mx-2 cursor-pointer hover:opacity-75"} ><span className="text-sm font-light">{user.following.length} Following</span></p>
+        <p onClick={() => fetchRelationships("following")} className={ relation_type === "following" ? "font-bold w-1/2 text-center border-b-2 border-gray-400 mx-2 hover:cursor-pointer" : "font-bold w-1/2 text-center mx-2 hover:cursor-pointer hover:opacity-75"} ><span className="text-sm font-light">{currentPerson && currentPerson.following.length} Following</span></p>
 
-        <p onClick={() => fetchRelationships("followers")} className={ relation_type === "followers" ?"font-bold w-1/2 text-center border-b-2 border-gray-400 mx-2 cursor-pointer" : "font-bold w-1/2 text-center mx-2 cursor-pointer hover:opacity-75"}
-        ><span className="text-sm font-light">{user.follower.length} Followers</span></p>
+        <p onClick={() => fetchRelationships("followers")} className={ relation_type === "followers" ?"font-bold w-1/2 text-center border-b-2 border-gray-400 mx-2 hover:cursor-pointer" : "font-bold w-1/2 text-center mx-2 hover:cursor-pointer hover:opacity-75"}
+        ><span className="text-sm font-light">{currentPerson && currentPerson.follower.length} Followers</span></p>
       </div>
       
       <p className="w-[70%] text-3xl text-center">Posts</p>
@@ -79,22 +124,25 @@ const Home = () => {
     
    <div className="h-[80vh] overflow-y-hidden hover:overflow-y-scroll border-r-2 border-gray-100 mt-[5%]" >
       { relationlist.map(person => (
-        <div className="flex items-center gap-2 px-20 py-2" key={person.id}>
+        <Link to={`/myhome/${person._id}`} className="flex items-center gap-2 px-20 py-2 hover:cursor-pointer hover:opacity-60" key={person.id}>
           <img className='w-12 h-12 rounded-full' src={avatar} alt={person.username} />
           <h5 className="font-bold ml-2 font-serif">{ person.username }</h5>
-        </div>
+        </Link>
       ))
       }
     </div>
 
     
-
     <div className="h-[80vh] overflow-y-hidden hover:overflow-y-scroll col-span-2 grid grid-cols-2 gap-2 mr-8">
-      { feedposts.map( post => (
+     { userposts.length === 0 && <p className="text-center text-blue-400 text-xl mt-32 col-span-2">No posts yet</p>}
+
+      { userposts.map( post => (
         <Postcard post={post} is_mypost={true}/>
       )) }
     </div>
    </section>
+  </article>
+}
 
    </main>
   )

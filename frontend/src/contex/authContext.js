@@ -27,14 +27,31 @@ const AuthContextProvider = ( { children }) => {
 
     const [ state , dispatch ] = useReducer( authReducer , { user : null} )
 
+    const updateUser = async (user ,id , token) => {
+       
+        const options = {
+            method : "GET",
+            headers : { "Authorization" : `Bearer ${token}` }
+        }
+
+
+        const response = await fetch(`/api/user/${id}` , options )
+        const json = await response.json()
+
+        const newuser = { ...json , token }
+
+         dispatch({type : AUTH_ACTIONS.LOGIN ,  payload : newuser})
+    }
+
     useEffect(() => {  
         const user = JSON.parse(localStorage.getItem("user"))
 
         if(user) {
-            console.log("Welcome back" + user.username_or_email)
-
             dispatch({type : AUTH_ACTIONS.LOGIN ,  payload : user})
+
+            updateUser(user ,user._id , user.token)
         }
+
     }, [] )
 
     return(

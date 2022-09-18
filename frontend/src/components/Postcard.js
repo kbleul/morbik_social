@@ -1,11 +1,16 @@
 import avatar from "../assets/placeholder/black.png"
 import { useAuthContext} from "../customHooks/useMyContext"
-import { useState , useEffect } from "react"
+import { useState } from "react"
+import {  Link } from "react-router-dom"
+
+
+import { AUTH_ACTIONS } from "../contex/authContext"
 
 const Postcard = ({ post , issuggestion , is_mypost }) => {
-  const  { user } = useAuthContext()
+  const  { user , dispatch } = useAuthContext()
   const  [likes , setlikes] = useState(post.likes.length)
   const  [liked , setliked] = useState(post.likes.includes(user._id))
+  const [ isfollowed , set_isfollowed ] = useState(false)
 
 
  let sec_style =  post.img === "" ? "max-h-[55vh] w-[70%] ml-[15%] my-12" : "h-[60vh] w-[70%] ml-[15%] my-12" 
@@ -18,8 +23,7 @@ const Postcard = ({ post , issuggestion , is_mypost }) => {
 
       const response = await fetch(`api/posts/like/${post._id}`, options)
       const json = await response.json()
-      console.log(json)
-
+     
       if(json.status === "Liked") { 
         setlikes(prevlikes => prevlikes + 1) 
         setliked(true)
@@ -30,23 +34,65 @@ const Postcard = ({ post , issuggestion , is_mypost }) => {
       }
       
 }
+
+const handleFollow = async () => {
+  const options = {
+    method : "PUT",
+    headers : { "Authorization" : `Bearer ${user.token}` },
+    }
+
+    let response 
+    if(isfollowed) {
+      response = await fetch(`api/user/unfollow/${post.userId}`, options)
+    }
+    else {
+      response = await fetch(`api/user/follow/${post.userId}`, options)
+    }
+
+    const json = await response.json()
+    
+    if(response.ok ) {
+      if(json.status === "Followed") { 
+        set_isfollowed(true)
+        const tempfollowing = [post.userId, ...user.following]
+        const newobj = {...user , following : tempfollowing }
+
+        console.log("new obj", newobj)
+  
+        dispatch({ type : AUTH_ACTIONS.UPDATE_INFO , payload : newobj})
+      }
+      else { 
+        set_isfollowed(false)
+        const tempfollowing = user.following.filter(tempf => tempf !== post.userId)
+        const newobj = {...user , following : tempfollowing }
+  
+        dispatch({ type : AUTH_ACTIONS.UPDATE_INFO , payload : newobj})
+       }
+    }
+
+}
+
  
   return (
     <section className={ is_mypost ? "h-max mt-12 shadow-md " : sec_style } >
    
 
     { !is_mypost && <section>
-      <div className="flex items-center justify-between ">
-        <div className={issuggestion ? "w-[85%] flex justify-between items-center" : "flex justify-between items-center"}>
-          <img src={ post.userProfilePicture === "" ? avatar : `/public/data/uploads/${post.userProfilePicture}` } alt={post.username} className='w-10 h-10 rounded-full'/>
-          <h5 className="font-bold ml-2 font-serif">{post.username}</h5>
+        <div className="flex items-center justify-between ">
+          <div className={issuggestion ? "w-[85%] flex justify-between items-center" : "flex justify-between items-center"}>
 
-          {issuggestion && <button className="ml-4 text-[crimson]">+ Follow</button>}
+            <Link to={`/myhome/${post.userId}`} className="flex items-center">
+              <img src={ post.userProfilePicture === "" ? avatar : `/public/data/uploads/${post.userProfilePicture}` } alt={post.username} className='w-10 h-10 rounded-full'/>
+              <h5 className="font-bold ml-2 font-sans ml-2">{post.username}</h5>
+            </Link>
+
+            {issuggestion && <button className="ml-4 text-[crimson]"
+            onClick={handleFollow}>{isfollowed ? "Unfollow" : "+ Follow"}</button>}
+          </div>
+            <p className="text-gray-400 text-sm">{post.createdAt}</p>
         </div>
-          <p className="text-gray-400 text-sm">{post.createdAt}</p>
-      </div>
 
-      <p className={ post.img === "" ? "p-2 max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll" : ""}>{post.desc}</p>
+        <p className={ post.img === "" ? "p-2 max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll" : ""}>{post.desc}</p>
       </section>
     }
 

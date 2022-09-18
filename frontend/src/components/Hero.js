@@ -3,9 +3,7 @@ import avatar from "../assets/placeholder/black.png"
 import cover from "../assets/placeholder/cover.jpg"
 
 
-const Hero = () => {
-
-  const  { user  } = useAuthContext()
+const Hero = ({user}) => {
 
 
   return (

@@ -64,6 +64,8 @@ const Post = () => {
       sendpost = await fetch(`api/share/${json._id}`, options)
 
       let json_two = await sendpost.json()
+      console.log("json_two",json,"-----",json_two)
+
 
       set_src(null)
       set_file(null)
@@ -88,6 +90,8 @@ const Post = () => {
       const sendpost = await fetch(`api/share/image`, options)
 
       let json_two = await sendpost.json()
+
+      console.log("json_two",json_two)
 
       set_src(null)
       set_file(null)

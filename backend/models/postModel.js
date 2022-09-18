@@ -15,7 +15,7 @@ const postSchema = new Schema({
     },
     userProfilePicture : {
         type : String,
-        required : true
+        default: ""
     },
     desc : {
         type : String,

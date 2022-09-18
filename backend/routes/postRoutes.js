@@ -1,6 +1,6 @@
 const router = require("express").Router()
 const requireAuth = require("../middleware/requireAuth")
-const { createPost , updatePost , deletePost, likePost, getPost, getTimelinePost , getSuggestedPost , getUserPost } = require("../controllers/postController")
+const { createPost , updatePost , deletePost, likePost, getPost, getTimelinePost , getSuggestedPost , getOthersPost, getUserPost } = require("../controllers/postController")
 
 
 // run authm middleware
@@ -25,6 +25,9 @@ router.get("/timeline/all", getTimelinePost)
 
 //GET TIMELINE SUGGESTED POSTS
 router.get("/timeline/suggested", getSuggestedPost)
+
+//GET TIMELINE SUGGESTED POSTS
+router.get("/current/:id", getOthersPost)
 
 //GET TIMELINE SUGGESTED POSTS
 router.get("/current", getUserPost)

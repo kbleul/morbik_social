@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { Link } from "react-router-dom"
+
 import pp from "../../assets/placeholder/black.png"
 
 import { AUTH_ACTIONS } from "../../contex/authContext"
@@ -39,10 +41,10 @@ const SecondaryNav = () => {
   
         </div>
 
-        <div className="w-1/2 flex justify-end items-center">
+        <Link to={`/myhome/${user._id}`} className="w-1/2 flex justify-end items-center">
            <p className="w-4/5 justify-self-end text-white font-bold text-end pr-[2%]">{user.username}</p>
            <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-10 h-10 rounded-full mr-16'/>
-        </div>
+        </Link>
 
     </section>
     
