@@ -6,6 +6,9 @@ const helmet = require("helmet")
 const userAuthRoutes = require("./routes/userAuthRoutes")
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
+const conversationRoutes = require("./routes/conversationRoutes")
+const messageRoutes = require("./routes/messageRoutes")
+
 
 var path = require('path');
 
@@ -71,6 +74,9 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
     app.use("/api/posts", postRoutes)
 
     app.use("/myhome/api/posts", postRoutes)
+
+    app.use("/api/conversation", conversationRoutes);
+    app.use("/api/message", messageRoutes);
 
 
 

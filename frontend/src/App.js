@@ -6,6 +6,7 @@ import Feed from "./pages/Feed"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Signup from "./pages/Signup"
+import Chat from "./pages/Chat"
 
 
 import { useAuthContext } from "./customHooks/useMyContext"
@@ -27,7 +28,7 @@ function App() {
             <Route path="/signup" element= { !user ?  <Signup /> : <Navigate to="/" />  } />
 
             <Route path="/myhome/:id" element= { user ?  <Home /> : <Navigate to="/login" /> } />
-
+            <Route path="/chat" element= { user ?  <Chat /> : <Navigate to="/login" /> } />
      
           </Routes>
   
