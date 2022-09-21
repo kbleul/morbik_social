@@ -1,6 +1,9 @@
 import {Users} from "../dummy"
 
-const OnlineFriends = () => {
+const OnlineFriends = ({chatingwith}) => {
+
+    const [ chatingWith , set_chatingWith ] = chatingwith
+
 
     return(<article className="mt-24 h-[88vh] overflow-y-hidden hover:overflow-y-scroll">
         <h3 className="my-4 text-center text-xl font-content-spliter font-bold">Online</h3>

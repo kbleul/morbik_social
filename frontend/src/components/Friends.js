@@ -1,20 +1,55 @@
 import {Users} from "../dummy"
 import Search from "../components/Search"
+import { useEffect , useState } from "react"
+import { useAuthContext } from "../customHooks/useMyContext"
+import pp from "../assets/placeholder/black.png"
 
-const Friends = () => {
+const Friends = ({chatingwith}) => {
+
+    const  { user  } = useAuthContext()
+
+    const [ chatingWith , set_chatingWith ] = chatingwith
+    const [friends, setfriends] = useState([])
+
+
+const fetchRelationships = async () => {
+
+        const options = {
+              method : "GET",
+              headers: { "Authorization" : `Bearer ${user.token}` },
+        }
+
+            const response = await fetch( `api/following` , options)
+    
+            const json = await response.json()
+    
+    console.log("rel,",response)
+            if(response.ok) { setfriends(json) }
+            
+    
+}
+
+ const handleChatwith =  (id) => {
+    set_chatingWith(id)
+    console.log("chatingWith",chatingWith)
+ }
+
+    useEffect(() => { fetchRelationships() }, [])
 
     return(<article className="mt-28 ">
 
-    <h3 className="my-4 text-center text-xl font-content-spliter font-bold">Friends</h3>
+    <h3 className="mt-4 mb-2 text-center text-xl font-content-spliter font-bold">Friends</h3>
 
     <section className="h-[79vh] border-t-2 overflow-y-hidden hover:overflow-y-scroll">
         <Search />
-        { Users.map(user => (
-            <div key={user.id} className="w-full flex  items-center py-2">
-                <img className="w-14 h-14 rounded-full ml-4" src={user.profilePicture} alt={user.username} />
-                <p className="w-full text-left text-base pl-4">{user.username}</p>
+        { friends.map(tempf => (
+            <div key={tempf._id} className="w-full flex  items-center py-2"
+                onClick={() => handleChatwith(tempf._id)}>
+                <img className="w-14 h-14 rounded-full ml-4" src={ tempf.profilePicture === "" ? pp : `/public/data/uploads/${tempf.profilePicture}`} alt={tempf.username} />
+                <p className="w-full text-left text-base pl-4">{tempf.username}</p>
             </div>
         ))}
+
     </section>
         
   </article>)

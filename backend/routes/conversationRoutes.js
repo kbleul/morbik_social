@@ -10,6 +10,6 @@ router.post("/", addConversation );
 router.get("/:userId", getConversation );
 
 // get Conversation between two users
-router.get("/find/:firstUserId/:secondUserId", getBetweenConversation );
+router.get("/between/:firstUserId/:secondUserId", getBetweenConversation );
 
 module.exports = router;
