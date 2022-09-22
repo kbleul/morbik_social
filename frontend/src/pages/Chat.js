@@ -18,7 +18,9 @@ const Chat = () => {
 
   const  [ chatingwith , set_chatingwith ] = useState(null)
   const  [ arrivalmessage , set_arrivalmessage ] = useState(null)
-
+  const  [ onlineusers , set_onlineusers ] = useState([])
+  const  [ friends, setfriends ] = useState([])
+  
 
   const socket = useRef()
 
@@ -37,6 +39,7 @@ const Chat = () => {
     }
   }
 
+
   useEffect(() => { 
     socket.current = io("ws://localhost:8900")  
     socket.current.on("getMessage", data => {
@@ -45,17 +48,20 @@ const Chat = () => {
         text : data.text,
         createdAt : Date.now()
       })
-
       addNotification(data.senderId)
     })
-  
+
   }, [])
 
   useEffect(() => {
       socket.current.emit("addUser" , user._id)
-      socket.current.on("getUsers" , users => {
-        console.log(users)
-      })
+
+      socket.current.on("getUsers", (users) => {
+        console.log("userss", users)
+        let temp = []
+        user.forEach(u => temp.push(u.userId))
+        set_onlineusers(friends?.filter((f) => temp.includes(f._id)));
+      });
 
   }, [user])
 
@@ -63,13 +69,13 @@ const Chat = () => {
   return (
     <article className="flex">
         <section className="w-[29%] mr-[1%]">
-            <OnlineFriends chatingwith={[chatingwith , set_chatingwith]}/>
+            <OnlineFriends chatingwith={[chatingwith , set_chatingwith]} onlineusers={onlineusers} relation={[friends, setfriends]}/>
         </section>
         <section className="w-[50%] mt-from-nav shadow-2xl">
           <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage} />
         </section>
         <section className="w-[19%] ml-[1%]">
-            <Friends chatingwith={[chatingwith , set_chatingwith]} />
+            <Friends chatingwith={[chatingwith , set_chatingwith]} relation={[friends, setfriends]} onlineUsers={[onlineusers , set_onlineusers]}/>
         </section>
     </article>
   )

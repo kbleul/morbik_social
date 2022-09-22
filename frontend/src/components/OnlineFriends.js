@@ -1,25 +1,28 @@
 import {Users} from "../dummy"
+import { useEffect , useState } from "react"
+import {useAuthContext} from "../customHooks/useMyContext"
+import SingleOnlineFriend from "../components/SingleOnlineFreinds"
 
-const OnlineFriends = ({chatingwith}) => {
+
+const OnlineFriends = ({chatingwith ,  onlineusers , relation}) => {
 
     const [ chatingWith , set_chatingWith ] = chatingwith
+    const  { user } = useAuthContext()
 
 
-    return(<article className="mt-24 h-[88vh] overflow-y-hidden hover:overflow-y-scroll">
+return(
+    <article className="mt-24 h-[88vh] overflow-y-hidden hover:overflow-y-scroll">
         <h3 className="my-4 text-center text-xl font-content-spliter font-bold">Online</h3>
         
         <section className="grid grid-cols-2 gap-4 items-center">
 
-            { Users.map(user => (
-                <div key={user.id} className="w-full relative flex flex-col items-center">
-                    <img className="w-4/5 h-48 rounded-full " src={user.profilePicture} alt={user.username} />
-                    <p className="text-sm text-center w-full">{user.username}</p>
-                    <p className="bg-green-400 w-3 h-3 rounded-full absolute top-[80%] left-[70%]"></p>
-
-                </div>
+            { onlineusers.map(tempuser => (<article className="w-full">
+                <SingleOnlineFriend  onlineuser_id={tempuser} />
+            </article>
             ))}
         </section>
-        </article>)
+     </article>
+)
 }
 
 export default OnlineFriends

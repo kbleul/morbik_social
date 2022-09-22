@@ -4,20 +4,23 @@ import { useEffect , useState } from "react"
 import { useAuthContext } from "../customHooks/useMyContext"
 import pp from "../assets/placeholder/black.png"
 
-const Friends = ({chatingwith}) => {
+const Friends = ({chatingwith , relation , onlineUsers}) => {
 
     const  { user  } = useAuthContext()
 
     const [ chatingWith , set_chatingWith ] = chatingwith
-    const [friends, setfriends] = useState([])
+    const [friends, setfriends] = relation
+    const [onlineusers , set_onlineusers] = onlineUsers
+
+
 
 
 const fetchRelationships = async () => {
 
-        const options = {
-              method : "GET",
-              headers: { "Authorization" : `Bearer ${user.token}` },
-        }
+    const options = {
+            method : "GET",
+            headers: { "Authorization" : `Bearer ${user.token}` },
+    }
 
             const response = await fetch( `api/following` , options)
     
@@ -29,12 +32,18 @@ const fetchRelationships = async () => {
     
 }
 
- const handleChatwith =  (id) => {
+const handleChatwith =  (id) => {
     set_chatingWith(id)
     console.log("chatingWith",chatingWith)
  }
 
-    useEffect(() => { fetchRelationships() }, [])
+useEffect(() => { fetchRelationships() }, [])
+
+useEffect(() => {
+    console.log("freinds " , friends)
+    setfriends(prev => prev.filter(temp => !onlineusers.includes(temp._id)))
+    console.log("freinds new " , friends)
+},[onlineusers , friends])
 
     return(<article className="mt-28 ">
 

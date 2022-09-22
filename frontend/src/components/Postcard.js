@@ -83,7 +83,7 @@ const handleFollow = async () => {
 
             <Link to={`/myhome/${post.userId}`} className="flex items-center">
               <img src={ post.userProfilePicture === "" ? avatar : `/public/data/uploads/${post.userProfilePicture}` } alt={post.username} className='w-10 h-10 rounded-full'/>
-              <h5 className="font-bold ml-2 font-sans ml-2">{post.username}</h5>
+              <h5 className="font-bold ml-2 font-sans">{post.username}</h5>
             </Link>
 
             {issuggestion && <button className="ml-4 text-[crimson]"

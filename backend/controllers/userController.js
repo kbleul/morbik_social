@@ -229,7 +229,8 @@ const getFollowers =  ( req , res ) => { fetchRelation("followers", req.user._id
 
 //GET FOLLOWING LIST
 const getFollowing =  ( req , res ) => { 
-    fetchRelation("following", req.user._id.toString() , req , res)  }
+    fetchRelation("following", req.user._id.toString() , req , res)  
+}
 
 //GET FRIENDS FOLLOWERS
 const getFriendFollowers = ( req , res ) => {
