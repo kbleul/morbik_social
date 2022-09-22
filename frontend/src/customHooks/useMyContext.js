@@ -2,6 +2,8 @@ import { useContext } from "react"
 import { AuthContext } from "../contex/authContext"
 import { PostContext } from "../contex/postContext"
 import { NewuserContext } from "../contex/newSignupContext"
+import { NotificContext } from "../contex/notificationContext"
+
 
 export const useAuthContext = () => {
     const context = useContext(AuthContext)
@@ -28,6 +30,16 @@ export const useNewUserContext = () => {
 
     if(!context) {
         throw Error("useAuthContext must be used inside of a AuthContextProvider")
+    }
+
+    return context
+}
+
+export const useNotificContext = () => {
+    const context = useContext(NotificContext)
+
+    if(!context) {
+        throw Error("useNotificContext must be used inside of a NotificContextProvider")
     }
 
     return context

@@ -19,6 +19,13 @@ const sendMessage = async ( json ) => {
           },
      }
 
+     socket.current.emit("sendMessage", {            senderId : user._id,
+          receiverId :chatingWith,
+          text : message
+     })
+console.log(user._id,
+     chatingWith,
+     message)
   const response = await fetch(`/api/message/`, options)
 
      if(response.ok) { 
@@ -27,11 +34,7 @@ const sendMessage = async ( json ) => {
           set_messages(prev => [...prev , jsontwo])
           set_message("")
      
-     socket.current.emit("sendMessage", {
-          senderId : user._id,
-          receiverId : chatingWith,
-          text : message
-       })
+    
      }
 
 }

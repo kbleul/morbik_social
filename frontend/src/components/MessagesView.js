@@ -26,7 +26,6 @@ const MessagesView = ({ chatingwith , allmessages , arrivalmessage }) => {
   
   
        if(json !== null) {
-    console.log("11",json)
 
         response = await fetch(`api/message/${json._id}` , options)
 
@@ -56,9 +55,10 @@ useEffect(() => { console.log("arraival messages" , arrivalmessage)
 
 return(<article className="h-[80%] overflow-y-hidden hover:overflow-y-scroll bg-gray-100">
     {messages.map(message => (
-            <div key={message._id} ref={scrollRef}>
-                <p className={message.sender === user._id ? "w-4/5 px-4 py-2 bg-pink-400 text-white" : "w-4/5 px-4 py-2 bg-blue-200 text-white"}>{message.text}</p>
-                <p className="w-1/5 text-sm text-gray-300 ">{message.createdAt}</p>
+            <div key={message._id} ref={scrollRef} className={message.sender === user._id ? "flex flex-col items-end" : ""}>
+  <p className={message.sender === user._id ? "w-[70%] px-4 py-2 bg-red-600 text-white  rounded-full" : 
+  "w-[70%] px-4 py-2 bg-teal-600 text-white rounded-full "}>{message.text}</p>
+  <p className={message.sender === user._id ? "w-1/5 text-sm text-gray-300 px-2 text-end" : "w-1/5 text-sm text-gray-300 px-2 "}>{message.createdAt}</p>
             </div>
          ))
     }

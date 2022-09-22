@@ -1,5 +1,5 @@
 
-import { useEffect } from "react"
+import { useEffect , useRef } from "react"
 
 import loading from "../assets/loading/loading2.gif"
 
@@ -15,11 +15,25 @@ import AddDetails from "../components/AddDetails"
 
 const Feed = () => {
     const  { isnew  } = useNewUserContext()
-  const  { feedposts , feedposts_suggested  } = usePostContext()
+    const  { feedposts , feedposts_suggested  } = usePostContext()
+  //const  [ arrivalmessage , set_arrivalmessage ] = useState(null)
+
+   // const socket = useRef()
+
 
   const { fetchPosts , post_isloading , post_error , sugg_isloading , sugg_error } = useFetchPosts()
 
-  useEffect(() => { fetchPosts() }, [])
+  useEffect(() => { 
+    // socket.current = io("ws://localhost:8900")  
+    // set_arrivalmessage({
+    //   sender : data.senderId,
+    //   text : data.text,
+    //   createdAt : Date.now()
+    // })
+
+    // addNotification(data.senderId)
+    fetchPosts() 
+  }, [])
 
 
   return (
