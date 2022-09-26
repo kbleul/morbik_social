@@ -42,13 +42,13 @@ const UpdateOtherInfo = () => {
 
   }
 
-    return( <form className="w-2/3" onSubmit={e => postOtherInfo(e)}>
+    return( <form className="w-full md:w-2/3" onSubmit={e => postOtherInfo(e)}>
         
-    <label>Say someting about yourself</label>
-    <textarea value={aboutme} onChange={ e => set_aboutme(e.target.value)} />
-    <label>Relationship Status</label>
+    <label className="block w-full text-center mb-[5%]">Say someting about yourself</label>
+    <textarea value={aboutme} onChange={ e => set_aboutme(e.target.value)} className="w-[90%] ml-[5%] border border-gray-300 px-2 h-[20vh] focus:border-none" />
 
-    <select value={relationship} onChange={e => set_relationship(e.target.value) }>            
+    <label className="block w-full text-center mb-[2%] mt-[8%]">Relationship Status</label>
+    <select className="w-1/2 ml-[25%]" value={relationship} onChange={e => set_relationship(e.target.value) }>            
       <option value="Single">Single 🕺</option>
       <option value="Married">Married</option>
       <option value="In a Relationship">In a Relationship</option>
@@ -58,8 +58,8 @@ const UpdateOtherInfo = () => {
       <option value="It's a Secret">It's a Secret</option>
     </select>
 
-    <label>Country</label>
-    <select value={country} onClick={ e => set_country(e.target.value) }>
+    <label className="block w-full text-center mb-[2%] mt-[8%]">Country</label>
+    <select className="w-1/2 ml-[25%]" value={country} onClick={ e => set_country(e.target.value) }>
         <option value="0">-- Select Country --</option>
         <option  value="United States">United States</option>
         <option value="Canada">Canada</option>
@@ -299,10 +299,10 @@ const UpdateOtherInfo = () => {
         <option value="Zimbabwe">Zimbabwe</option>
     </select>
 
-    <label>City</label>
-    <input type="text" value={city} onChange={e => set_city(e.target.value) } />
-
-    <button>Submit</button>
+    <label className="block w-full text-center mb-[2%] mt-[8%]">City</label>
+    <input className="w-[70%] md:w-4/5 ml-[15%] md:ml-[10%] border-b border-gray-500 focus:border-none mb-2" type="text" value={city} onChange={e => set_city(e.target.value) } />
+    <hr />
+    <button className="hover:text-red-500 cursor-pointer my-4 w-[30%] ml-[30%]">Submit</button>
    </form>)
 }
 

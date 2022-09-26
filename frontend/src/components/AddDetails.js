@@ -8,7 +8,7 @@ const AddDetails = () => {
 
     const [ currenttask , set_currenttask ] = useState("profilepic")
 
-  return ( <section className="mt-32 flex flex-col"> 
+  return ( <section className="mt-44 md:mt-32 flex flex-col"> 
             <h3 className="text-2xl text-center">Just a few more details</h3>
             <div className="mt-6 flex">
 

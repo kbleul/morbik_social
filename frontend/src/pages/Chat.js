@@ -59,8 +59,9 @@ const Chat = () => {
       socket.current.on("getUsers", (users) => {
         console.log("userss", users)
         let temp = []
-        user.forEach(u => temp.push(u.userId))
-        set_onlineusers(friends?.filter((f) => temp.includes(f._id)));
+        users.forEach(u => temp.push(u.userId))
+        set_onlineusers(temp.filter(t => user.following.includes(t)));
+        
       });
 
   }, [user])

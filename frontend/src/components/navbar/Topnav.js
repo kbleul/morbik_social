@@ -9,17 +9,17 @@ const TopNav = () => {
   const  { user  } = useAuthContext()
 
   return (
-    <section className="bg-slate-600  flex justify-center items-center">
+    <section className="bg-slate-600  flex flex-col md:flex-row justify-center items-center">
 
-          <div  className="w-1/5 text-center font-bold">Logo</div>
+          <div  className="hidden md:block w-1/5 text-center font-bold">Logo</div>
 
-          <div className="w-8/12 py-1">
+          <div className="w-full md:w-8/12 py-1">
            <Search />
           </div>
 
-          <div className="w-1/5 flex justify-evenly font-bold" >
-            <Link to={"/"}><button>Feed</button></Link>
-            <Link to={`/myhome/${user._id}`}><button>Home</button></Link>
+          <div className="w-full md:w-1/5 flex justify-end md:justify-evenly font-bold pt-4 pb-2" >
+            <Link to={"/"} className="mr-4 hover:text-red-500"><button>Feed</button></Link>
+            <Link to={`/myhome/${user._id}`} className="mr-4 hover:text-red-500"><button>Home</button></Link>
           </div>
 
       </section>

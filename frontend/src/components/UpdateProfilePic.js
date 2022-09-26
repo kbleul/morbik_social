@@ -48,9 +48,9 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
 }
 
     return(
-        <form enctype="multipart/form-data" onSubmit={e => postProfilePicture(e)} className="flex flex-col w-1/2 ml-[25%]">
+        <form enctype="multipart/form-data" onSubmit={e => postProfilePicture(e)} className="flex flex-col w-full md:w-1/2 md:ml-[25%]">
           <label className="text-center">Set your profile picture</label>
-          <input type="file" name="avatar" accept=".png, .jpg, .jpeg" 
+          <input className="mt-[10%] w-4/5 ml-[10%]" type="file" name="avatar" accept=".png, .jpg, .jpeg" 
             onChange={e => {
               set_file(e.target.files[0])
               getImgData(e.target.files[0]);
@@ -59,7 +59,7 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
           <div className="w-1/2 ml-[25%] flex justify-end items-center">
             { src ? 
               <div className="w-full relative flex justify-center" >
-                <img className="w-64 h-64 rounded-full " src={src} alt="profile picture"/>
+                <img className="w-64 h-64 rounded-full mt-12" src={src} alt="profile picture"/>
                 <p className="absolute top-0 left-[47%] text-4xl text-red-600 rounded-full hover:text-red-400 " 
                 onClick={() => { set_file(null); set_src("")}}>x</p>
               </div> : 
@@ -70,9 +70,9 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
           }
           </div>
 
-          <button>Submit</button>
-      
-          <button onClick={e =>{ e.preventDefault();  set_currenttask("coverpic")}}>skip</button>
+          <button className="hover:text-red-500 cursor-pointer my-4">Submit</button>
+          <hr />
+          <button className="hover:text-red-500 cursor-pointer my-4" onClick={e =>{ e.preventDefault();  set_currenttask("coverpic")}}>skip</button>
       </form>
     )
 }

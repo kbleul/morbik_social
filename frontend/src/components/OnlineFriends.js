@@ -6,7 +6,6 @@ import SingleOnlineFriend from "../components/SingleOnlineFreinds"
 
 const OnlineFriends = ({chatingwith ,  onlineusers , relation}) => {
 
-    const [ chatingWith , set_chatingWith ] = chatingwith
     const  { user } = useAuthContext()
 
 
@@ -16,8 +15,8 @@ return(
         
         <section className="grid grid-cols-2 gap-4 items-center">
 
-            { onlineusers.map(tempuser => (<article className="w-full">
-                <SingleOnlineFriend  onlineuser_id={tempuser} />
+            { onlineusers.map(tempuser => (<article className="w-full" key={tempuser}>
+                <SingleOnlineFriend  onlineuser_id={tempuser}  chatingwith={chatingwith}/>
             </article>
             ))}
         </section>
