@@ -1,5 +1,7 @@
 import { useEffect , useRef } from "react"
 import { useAuthContext } from "../customHooks/useMyContext"
+import { useMediaQuery } from 'react-responsive';
+
 
 
 const MessagesView = ({ chatingwith , allmessages , arrivalmessage }) => {
@@ -9,6 +11,11 @@ const MessagesView = ({ chatingwith , allmessages , arrivalmessage }) => {
     const [ messages , set_messages ] = allmessages
 
     const scrollRef = useRef();
+
+    const isMobileDevice = useMediaQuery({
+      query: "(max-device-width: 768px)",
+    });
+  
 
   useEffect(() => {
     if(chatingWith !== null) {
@@ -53,11 +60,11 @@ useEffect(() => { console.log("arraival messages" , arrivalmessage)
 },[arrivalmessage , chatingWith])
 
 
-return(<article className="h-[80%] overflow-y-hidden hover:overflow-y-scroll bg-gray-100">
+  return(<article className={isMobileDevice ? "h-[90%] overflow-y-hidden hover:overflow-y-scroll bg-gray-100" : "h-[80%] overflow-y-hidden hover:overflow-y-scroll bg-gray-100"}>
     {messages.map(message => (
-            <div key={message._id} ref={scrollRef} className={message.sender === user._id ? "flex flex-col items-end mb-4 " : "mb-4 "}>
-              <p className={message.sender === user._id ? "w-[80%] px-8 py-3 bg-red-600 text-white  rounded-2xl" : "w-[80%] px-8 py-3 bg-teal-600 text-white rounded-2xl "}>{message.text}</p>
-              <p className={message.sender === user._id ? "w-1/5 text-sm text-gray-300 px-2 text-end" : "w-1/5 text-sm text-gray-300 px-2 "}>{message.createdAt}</p>
+            <div key={message._id} ref={scrollRef} className={message.sender === user._id ? "flex flex-col items-end mb-3 " : "mb-3 "}>
+              <p className={message.sender === user._id ? "w-[80%] px-4 py-3 bg-red-600 text-white  rounded-2xl" : "w-[80%] px-4 py-3 bg-teal-600 text-white rounded-2xl "}>{message.text}</p>
+              <p className={message.sender === user._id ? "w-2/5 text-sm text-gray-300 px-2 text-end" : "w-2/5 text-sm text-gray-300 px-2 "}>{message.createdAt}</p>
             </div>
          ))
     }

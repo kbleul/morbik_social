@@ -3,7 +3,7 @@ import {useAuthContext} from "../customHooks/useMyContext"
 import { useState , useEffect } from 'react'
 import avatar from "../assets/placeholder/black.png"
 
-const SingleOnlineFriend = ({onlineuser_id , chatingwith}) => {
+const SingleOnlineFriend = ({onlineuser_id , chatingwith , set_currentpage}) => {
     
     const  { user } = useAuthContext()
     const [  , set_chatingWith ] = chatingwith
@@ -28,7 +28,11 @@ useEffect(() => {  getOnlineUsers()  },[])
 
  return (  <section  className="w-full">
    { currentuser &&
-        <div key={currentuser._id} className="w-full relative flex flex-col items-center" onClick={() => set_chatingWith(currentuser._id)}>
+        <div key={currentuser._id} className="w-full relative flex flex-col items-center" 
+        onClick={() =>{ 
+            set_chatingWith(currentuser._id)
+            set_currentpage("chatbox")
+        }}>
             <img className="w-4/5 h-48 rounded-full " src={avatar} alt={currentuser.username} />
             <p className="text-sm text-center w-full">{currentuser.username}</p>
             <p className="bg-green-400 w-3 h-3 rounded-full absolute top-[80%] left-[70%]"></p>

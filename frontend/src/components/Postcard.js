@@ -13,9 +13,9 @@ const Postcard = ({ post , issuggestion , is_mypost }) => {
   const [ isfollowed , set_isfollowed ] = useState(false)
 
 
- let sec_style =  post.img === "" ? "max-h-[55vh] w-[70%] ml-[15%] my-12" : "h-[60vh] w-[70%] ml-[15%] my-12" 
+ let sec_style =  post.img === "" ? "max-h-[55vh] w-[96%] md:w-[70%] ml-[2%] md:ml-[15%] my-12" : "h-[50vh] w-[96%] md:w-[70%] ml-[2%] md:ml-[15%] md:my-12" 
 
-  const likeUnlike_post = async () => {
+const likeUnlike_post = async () => {
     const options = {
       method : "PUT",
       headers : { "Authorization" : `Bearer ${user.token}` }
@@ -74,7 +74,7 @@ const handleFollow = async () => {
 
  
   return (
-    <section className={ is_mypost ? "h-max mt-12 shadow-md " : sec_style } >
+    <section className={ is_mypost ? "h-max mt-12 shadow-md ml-2 md:ml-0" : sec_style } >
    
 
     { !is_mypost && <section>

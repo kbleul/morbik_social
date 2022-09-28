@@ -105,8 +105,8 @@ const Post = () => {
 
 
   return (
-    <div className="w-[90%] ml-[5%] mt-4 flex">
-      <img src={user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-16 h-16 rounded-full' />
+    <div className="w-[90%] ml-[5%] mt-40 md:mt-4 flex">
+      <img src={pp} alt="profile" className='w-16 h-16 rounded-full self-center' />
 
       <form onSubmit={e => handleSubmit(e)} enctype="multipart/form-data" className="ml-4 w-4/5">
         <textarea value={disc} onChange={e => set_disc(e.target.value)} placeholder="What's on your mind ?" className="text-xl py-4 px-2 border-b-2 focus:outline-0 outline-0 w-full" />

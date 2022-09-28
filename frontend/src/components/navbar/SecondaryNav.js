@@ -54,13 +54,13 @@ const SecondaryNav = () => {
 
         <Link to={`/myhome/${user._id}`} className="w-1/2 flex justify-end items-center">
            <p className="w-4/5 justify-self-end text-white font-bold text-end pr-[2%]">{user.username}</p>
-           <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-8 h-8 md:w-10 md:h-10 rounded-full mr-2 md:mr-16'/>
+           <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-8 h-8 md:w-10 md:h-10 rounded-full mr-4 md:mr-16'/>
         </Link>
 
     </section>
     
     { menuon &&
-    <ul className="w-1/6 ml-[2%] bg-slate-500 text-center">
+    <ul className="w-[90%] md:w-5/12 md:ml-[2%] bg-slate-500 text-center">
       <li className="px-4 py-2 w-full border-b border-gray-400 cursor-pointer "
           onClick={logout}>Logout</li>
     </ul>}

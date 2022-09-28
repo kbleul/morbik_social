@@ -10,8 +10,8 @@ const Hero = ({user}) => {
     <section className="bg-rose-300">
         <img src={user.coverPicture === "" ?  cover : `/public/data/uploads/${user.coverPicture}` } alt="cover" className="h-[70vh] w-full"/>
 
-        <div className="flex absolute top-[70%]  w-2/5 ml-[30%] text-white  bg-[rgba(0,0,0,.5)]">
-         <img className="w-56 h-56 rounded-[15rem] mt-1 p-2" src={ user.profilePicture === "" ? avatar : avatar} alt="profile" />
+        <div className="flex absolute top-[45vh] md:top-[70%] w-full md:w-2/5 md:ml-[30%] text-white  bg-[rgba(0,0,0,.5)]">
+         <img className="w-32 h-32 md:w-56 md:h-56 rounded-[15rem] mt-[15%] md:mt-1 p-2" src={ user.profilePicture === "" ? avatar : avatar} alt="profile" />
          <div className="ml-[6%] w-full">
             <h4 className="pt-[15%] font-extrabold text-xl">{user.username}</h4>
             <p className=" px-[ 2% ] pt-[2%] pb-[10%] h-20 overflow-y-hidden mb-4">{user.disc === "" ? "..." :user.disc}</p>
@@ -29,7 +29,7 @@ const Hero = ({user}) => {
 
             </div>
 
-            <div className="flex ml-[4%] border-l-2 text-sm mt-[5%] w-full">
+            <div className="flex ml-[4%] border-l-2 text-sm mt-[5%] w-full pb-2">
              <p className="ml-1 bg-slate-200 text-black" >Joined {user.createdAt}</p></div>
             </div>
         </div>
