@@ -9,13 +9,11 @@ router.use(requireAuth)
 //CREATE POST
 router.post("/image", createPost )
 
-
 //UPDATE POST
 router.put("/:id", updatePost )
 
 //DELETE POST
 router.delete("/:id", deletePost )
-
 
 //LIKE POST
 router.put("/like/:id", likePost )
@@ -34,8 +32,6 @@ router.get("/current", getUserPost)
 
 //GET A POST
 router.get("/:id", getPost)
-
-
 
 
 module.exports = router

@@ -1,24 +1,21 @@
 
-import { useEffect , useState } from "react"
+import { useEffect , useState , useCallback } from "react"
 import { useMediaQuery } from 'react-responsive';
 
 import loading from "../assets/loading/loading2.gif"
 
 import Post from "../components/Post"
 import Postcard from "../components/Postcard"
+import AddDetails from "../components/AddDetails"
 
 import { useNewUserContext } from "../customHooks/useMyContext"
 import { usePostContext } from "../customHooks/useMyContext"
 import { useFetchPosts } from "../customHooks/useFetchPosts"
 
-import AddDetails from "../components/AddDetails"
-
 
 const Feed = () => {
 
-    const isMobileDevice = useMediaQuery({
-      query: "(max-device-width: 768px)",
-    });
+    const isMobileDevice = useMediaQuery({  query: "(max-device-width: 768px)",  });
 
 
     const  { isnew  } = useNewUserContext()
@@ -26,7 +23,9 @@ const Feed = () => {
 
   const { fetchPosts , post_isloading , post_error , sugg_isloading , sugg_error } = useFetchPosts()
 
-  useEffect(() => { fetchPosts() }, [])
+  //const getPosts  = useCallback(() => fetchPosts() , [])
+
+  useEffect(() => { fetchPosts() }, [fetchPosts])
 
 
   return (
@@ -35,7 +34,7 @@ const Feed = () => {
     { isnew ?  <AddDetails />
       : <article>{isMobileDevice ?  
         <MobileVersionFeed feedposts={feedposts} feedposts_suggested={feedposts_suggested} post_isloading={post_isloading} sugg_isloading={sugg_isloading} post_error={post_error} sugg_error={sugg_error} /> :
-        <>
+        <article>
         <section className="mt-[9rem] md:mt-from-nav flex">
           <p className="mt-8 w-[20%] font-content-spliter text-[1.3rem] font-bold self-end border-l-4 border-orange-500 pl-2 ml-2 hidden md:block cursor-pointer">My Feed</p>
 
@@ -75,7 +74,7 @@ const Feed = () => {
          </div>
         
        </section>
-       </>
+       </article>
       }
     </article>
 

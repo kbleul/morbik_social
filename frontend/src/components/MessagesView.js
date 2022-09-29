@@ -1,62 +1,51 @@
-import { useState , useEffect , useRef } from "react"
+import { useEffect , useRef , useCallback } from "react"
 import { useAuthContext } from "../customHooks/useMyContext"
 import { useMediaQuery } from 'react-responsive';
 
-
-
-const MessagesView = ({ chatingwith , allmessages , arrivalmessage , friends , chatingWith_name }) => {
+const MessagesView = ({ chatingwith , allmessages , arrivalmessage , chatingWith_name }) => {
 
     const { user } = useAuthContext()
-    const [ chatingWith , set_chatingWith ] = chatingwith
+    const [ chatingWith  ] = chatingwith
     const [ messages , set_messages ] = allmessages
-    // const [ chatingWith_name , set_chatingWith_name ] = useState(null)
-
 
     const scrollRef = useRef();
-
     const isMobileDevice = useMediaQuery({ query: "(max-device-width: 768px)",  });
-  
 
-  useEffect(() => {console.log("friends" , friends)
-   // let name = friends?.find(f => f._id === chatingWith ).username
-    // friends.length > 0 && set_chatingWith_name(friends?.find(f => f._id === chatingWith ).username)
 
-    if(chatingWith !== null) {
-            const getChat = async () => {
-        let options = {
-            method : "GET",
-            headers : { "Authorization": `Bearer ${user.token}` }
-            }
+const getChat = useCallback( async () => {
+      let options = {
+          method : "GET",
+          headers : { "Authorization": `Bearer ${user.token}` }
+          }
 
-       let response = await fetch(`api/conversation/between/${user._id}/${chatingWith}`, options)
-  
-       let json = await response.json()
-  
-  
-       if(json !== null) {
-        response = await fetch(`api/message/${json._id}` , options)
+     let response = await fetch(`api/conversation/between/${user._id}/${chatingWith}`, options)
 
-        if(response.ok) {
-            json = await response.json()
-            set_messages(json)
-        }
-        } else {   set_messages([])   }
-     }
+     let json = await response.json()
 
-        getChat()
-    }
+     if(json !== null) {
+      response = await fetch(`api/message/${json._id}` , options)
 
-  },[chatingWith])
+      if(response.ok) {
+          json = await response.json()
+          set_messages(json)
+      }
+
+    } else {   set_messages([])   }
+
+},[user.token , user._id , set_messages , chatingWith ])
+
+
+useEffect(() => { if(chatingWith !== null) { getChat() }  },[chatingWith , getChat])
 
 useEffect(() => { 
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-useEffect(() => { console.log("arraival messages" , arrivalmessage)
+useEffect(() => {
     arrivalmessage &&  chatingWith === arrivalmessage.sender &&
     set_messages(prev => [...prev , arrivalmessage])
     
-},[arrivalmessage , chatingWith])
+},[arrivalmessage , chatingWith , set_messages])
 
 
   return(<article className={isMobileDevice ? "h-[68vh] overflow-y-hidden hover:overflow-y-scroll bg-gray-100 relative" : "h-[80%] overflow-y-hidden hover:overflow-y-scroll bg-gray-100 relative"}>

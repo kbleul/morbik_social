@@ -7,7 +7,6 @@ const formatDistance = require('date-fns/formatDistance')
         //create a readable date
 const createReadableDate = (date) => {
     const newdate = formatDistance(new Date(date),new Date());
-    
     return newdate
 }
 
@@ -37,56 +36,46 @@ const updateUser = async ( req , res ) => {
     }
 
         try {
-
             const salt = await bcrypt.genSalt(10)
             const hash = await bcrypt.hash(req.body.password , salt) 
             req.body.password = hash
-
-        } catch(error) {
-              res.status(404).json({error: "Change user password failed "}) 
-        }
+        } 
+        catch(error) 
+          { res.status(404).json({error: "Change user password failed "})  }
     }
 
 
        try {
-console.log("body " , req.body)
        const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...req.body })
 
        const updated_user = await User.findById({ _id : userparam_id })
-console.log(updated_user)
     
           res.status(200).json(prepareReturnObj(updated_user) )
 
-       } catch(error) {    res.status(404).json({error: error}) }
+       } catch(error) { res.status(404).json({error: error}) }
 }
 
 //PUT UPDATE PROFILE Picture
 const updateProfilePic = async ( req, res ) => {
-    console.log(req.img , "olalallaal")
       const userparam_id = req.params.id
 
       try {
           const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"profilePicture" : req.img} })
-  console.log(user_json)
 
           res.status(200).json({ profilePicture : req.img })
-          }  catch(error) {    
-              res.status(404).json({error: "Profile picture not uploaded "}) 
-          }
+          }  
+        catch(error) { res.status(404).json({error: "Profile picture not uploaded "}) }
 }
 
 const updateCoverPic = async ( req , res ) => {
-    console.log(req.img, "loaaa")
       const userparam_id = req.params.id
 
       try {
           const user_json = await User.findOneAndUpdate({ _id : userparam_id } , { ...{"coverPicture" : req.img} })
-             console.log(user_json)
        
              res.status(200).json({ coverPicture : req.img })
-          }  catch(error) {    
-              res.status(404).json({error: "Profile picture not uploaded "}) 
-          }
+          }  
+     catch(error) { res.status(404).json({error: "Profile picture not uploaded "})  }
 }
 
 //DELETE user

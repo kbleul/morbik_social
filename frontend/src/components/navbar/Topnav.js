@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom"
 
-import Search from "../Search"
 import {useAuthContext} from "../../customHooks/useMyContext"
 
-import { Link } from "react-router-dom"
+import Search from "../Search"
+
 
 const TopNav = () => {
 
@@ -11,7 +12,7 @@ const TopNav = () => {
   return (
     <section className="bg-slate-600  flex flex-col md:flex-row justify-center items-center">
 
-          <div  className="hidden md:block w-1/5 text-center font-bold">Logo</div>
+          <div  className="hidden md:block w-1/5 text-center font-bold font-logo lg:text-2xl">Morbik Social</div>
 
           <div className="w-full md:w-8/12 py-1">
            <Search />

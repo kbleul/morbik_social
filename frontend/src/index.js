@@ -6,7 +6,7 @@ import App from './App';
 
 import  AuthContextProvider  from "./contex/authContext"
 import  PostContextProvider  from "./contex/postContext"
-import Newuser_ContextProvider from "./contex/newSignupContext"
+import NewuserContextProvider from "./contex/newSignupContext"
 import NotificContextProvider from "./contex/notificationContext"
 
 
@@ -15,13 +15,13 @@ root.render(
   <React.StrictMode>
     <Router>
       <AuthContextProvider >
-        <Newuser_ContextProvider>
+        <NewuserContextProvider>
            <PostContextProvider>
               <NotificContextProvider>
                  <App />
               </NotificContextProvider>
            </PostContextProvider>
-        </Newuser_ContextProvider>
+        </NewuserContextProvider>
       </AuthContextProvider>
     </Router>
   </React.StrictMode>

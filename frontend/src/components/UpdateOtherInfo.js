@@ -14,33 +14,32 @@ const UpdateOtherInfo = () => {
     const [ city , set_city ] = useState("")
     const [ country , set_country ] = useState("Select a Country")
 
-    const postOtherInfo = async (e) => {
-        e.preventDefault()
-  
-        const options = {
-          method : "PUT",
-          headers : { 
-            "content-Type" : "application/json",
-            "Authorization" : `Bearer ${user.token}`  
-        },
-          body : JSON.stringify( { disc : aboutme , city , country , relationship} )
-        }
+const postOtherInfo = async (e) => {
+      e.preventDefault()
 
-        await fetch(`/api/user/${user._id}` , options )
-        .then(response => response.json())
-          .then(result => {
-            dispatch( { type : AUTH_ACTIONS.UPDATE_INFO , payload : {...user, email : result.email , username : result.username , disc : result.disc , city : result.city , country : result.country , relationship : result.relationship , follower : result.follower , following : result.following  }})
+      const options = {
+        method : "PUT",
+        headers : { 
+          "content-Type" : "application/json",
+          "Authorization" : `Bearer ${user.token}`  
+      },
+        body : JSON.stringify( { disc : aboutme , city , country , relationship} )
+      }
 
-            console.log("result" , result)
-                  set_aboutme("")
-                  set_relationship("")
-                  set_country("")
-                  set_city("")
-                  set_isnew(false)
-          })
-          .catch((error) => {  console.error('Error:', error);  });
+      await fetch(`/api/user/${user._id}` , options )
+      .then(response => response.json())
+        .then(result => {
+          dispatch( { type : AUTH_ACTIONS.UPDATE_INFO , payload : {...user, email : result.email , username : result.username , disc : result.disc , city : result.city , country : result.country , relationship : result.relationship , follower : result.follower , following : result.following  }})
 
-  }
+                set_aboutme("")
+                set_relationship("")
+                set_country("")
+                set_city("")
+                set_isnew(false)
+        })
+        .catch((error) => {  console.error('Error:', error);  });
+
+}
 
     return( <form className="w-full md:w-2/3" onSubmit={e => postOtherInfo(e)}>
         
@@ -59,7 +58,7 @@ const UpdateOtherInfo = () => {
     </select>
 
     <label className="block w-full text-center mb-[2%] mt-[8%]">Country</label>
-    <select className="w-1/2 ml-[25%]" value={country} onClick={ e => set_country(e.target.value) }>
+    <select className="w-1/2 ml-[25%]" value={country} onChange={ e => set_country(e.target.value) }>
         <option value="0">-- Select Country --</option>
         <option  value="United States">United States</option>
         <option value="Canada">Canada</option>

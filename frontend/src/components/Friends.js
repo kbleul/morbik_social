@@ -1,21 +1,23 @@
-import { useEffect , useState } from "react"
-import { useAuthContext } from "../customHooks/useMyContext"
-import pp from "../assets/placeholder/black.png"
+import { useEffect , useCallback } from "react"
 import { useMediaQuery } from 'react-responsive';
+
+import { useAuthContext } from "../customHooks/useMyContext"
+
+import pp from "../assets/placeholder/black.png"
 
 
 const Friends = ({ chatingwith , relation , onlineUsers , set_currentpage , set_chatingWith_name }) => {
 
     const  { user  } = useAuthContext()
 
-    const [ chatingWith , set_chatingWith ] = chatingwith
+    const [  , set_chatingWith ] = chatingwith
     const [friends, setfriends] = relation
     const [onlineusers] = onlineUsers
 
     const isMobileDevice = useMediaQuery({ query: "(max-device-width: 768px)", });
 
 
-const fetchRelationships = async () => {
+const fetchRelationships = useCallback( async () => {
 
     const options = {
             method : "GET",
@@ -25,23 +27,22 @@ const fetchRelationships = async () => {
     const response = await fetch( `api/following` , options)
 
     const json = await response.json()
-    
-    console.log("rel,",response)
+
             if(response.ok) { setfriends(json) }
-}
+            
+}, [user.token , setfriends ] )
 
 const handleChatwith =  (id , uname) => {
     set_chatingWith(id)
     set_chatingWith_name(uname)
-    console.log("chatingWith",chatingWith)
     set_currentpage && set_currentpage("chatbox")
- }
+}
 
-useEffect(() => { fetchRelationships() }, [])
+useEffect(() => {  fetchRelationships()  }, [fetchRelationships])
 
 useEffect(() => {
     setfriends(prev => prev.filter(f => !onlineusers.includes(f._id)))
-},[onlineusers ])
+},[onlineusers , setfriends])
 
 
     return(<article className={!isMobileDevice && "mt-28 "}>
@@ -51,7 +52,7 @@ useEffect(() => {
     <section className="h-[79vh] border-t-2 overflow-y-hidden hover:overflow-y-scroll">
 
         { friends.map(tempf => (
-            <div key={tempf._id} className={isMobileDevice ? "w-full flex  items-center  ml-12 my-[7%]" : "w-full flex  items-center md:ml-[17%] lg:my-4 mt-[8%] " }
+            <div key={tempf._id} className={isMobileDevice ? "w-full flex  items-center  pl-12 my-[7%] cursor-pointer" : "w-full flex  items-center md:pl-[17%] lg:mr-4 mt-[8%] cursor-pointer hover:bg-gray-100" }
                 onClick={() => handleChatwith(tempf._id , tempf.username)}>
                 <img className="w-12 h-12 rounded-full" src={ tempf.profilePicture === "" ? pp : `/public/data/uploads/${tempf.profilePicture}`} alt={tempf.username} />
                 <p className="w-full text-left text-base pl-4">{tempf.username}</p>

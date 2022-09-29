@@ -8,10 +8,10 @@ const NotificContextProvider = ({ children }) => {
     const [ othernotifications , set_othernotifications ] = useState([])
 
 
-    return( <NotificContext.Provider value = { 
-    { chatnotifications , set_chatnotifications , othernotifications , set_othernotifications } }>
-            { children }
-        </NotificContext.Provider> )
+    return( 
+    <NotificContext.Provider value = { { chatnotifications , set_chatnotifications , othernotifications , set_othernotifications } }>
+        { children }
+    </NotificContext.Provider> )
 }
 
 export default NotificContextProvider

@@ -37,7 +37,6 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
   
       ).then((response) => response.json())
         .then((result) => { 
-          console.log({...user, profilePicture : result.profilePicture}) 
           dispatch( { type : AUTH_ACTIONS.UPDATE_INFO , payload : {...user, profilePicture : result.profilePicture}})
           set_currenttask("coverpic")
           set_src(null)
@@ -59,7 +58,7 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
           <div className="w-1/2 ml-[25%] flex justify-end items-center">
             { src ? 
               <div className="w-full relative flex justify-center" >
-                <img className="w-64 h-64 rounded-full mt-12" src={src} alt="profile picture"/>
+                <img className="w-64 h-64 rounded-full mt-12" src={src} alt="profile"/>
                 <p className="absolute top-0 left-[47%] text-4xl text-red-600 rounded-full hover:text-red-400 " 
                 onClick={() => { set_file(null); set_src("")}}>x</p>
               </div> : 

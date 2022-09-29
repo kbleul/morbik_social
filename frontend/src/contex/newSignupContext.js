@@ -3,7 +3,7 @@ import { createContext, useState  } from "react"
 
 export const NewuserContext = createContext()
 
-const Newuser_ContextProvider = ( { children } ) => {
+const NewuserContextProvider = ( { children } ) => {
     const [ isnew , set_isnew ] = useState(false)
 
     return ( <NewuserContext.Provider value = { { isnew , set_isnew } }>
@@ -11,4 +11,4 @@ const Newuser_ContextProvider = ( { children } ) => {
         </NewuserContext.Provider>)
 }
 
-export default Newuser_ContextProvider
+export default NewuserContextProvider

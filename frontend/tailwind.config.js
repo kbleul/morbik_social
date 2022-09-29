@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'content-spliter': ['"Aboreto"', 'cursive'],
+        'logo' : ['"Bungee Spice"', 'cursive']
       },
       height: {
         'nav': '6.25rem',

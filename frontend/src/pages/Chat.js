@@ -1,17 +1,13 @@
-
-import  OnlineFriends  from "../components/OnlineFriends"
-import  Friends  from "../components/Friends"
-import  MessageBox  from "../components/MessageBox"
-
-import { useRef , useEffect , useState } from "react"
+import { useRef , useEffect , useState , useCallback } from "react"
 import {io} from "socket.io-client"
 import { useMediaQuery } from 'react-responsive';
-
 
 import {useAuthContext} from "../customHooks/useMyContext"
 import {useNotificContext} from "../customHooks/useMyContext"
 
-
+import  OnlineFriends  from "../components/OnlineFriends"
+import  Friends  from "../components/Friends"
+import  MessageBox  from "../components/MessageBox"
 
 const Chat = () => {
 
@@ -23,12 +19,11 @@ const Chat = () => {
   const  [ arrivalmessage , set_arrivalmessage ] = useState(null)
   const  [ onlineusers , set_onlineusers ] = useState([])
   const  [ friends, setfriends ] = useState([])
-  
 
   const socket = useRef()
   const isMobileDevice = useMediaQuery({  query: "(max-device-width: 768px)",  });
 
-  const addNotification = async(senderId) => {
+const addNotification = useCallback( async(senderId) => {
    const options = {
       method : "Get",
       headers : { "Authorization": `Bearer ${user.token}` }
@@ -39,9 +34,8 @@ const Chat = () => {
     if(response.ok) {
       const {username} = await response.json()
       set_chatnotifications(prev => [...prev , `${username} send you a message`])
-      console.log( `${username} send you a message`)
     }
-  }
+},[user.token,set_chatnotifications])
 
 
 useEffect(() => { 
@@ -55,25 +49,23 @@ useEffect(() => {
     addNotification(data.senderId)
   })
 
-}, [])
+}, [addNotification])
 
 useEffect(() => {
       socket.current.emit("addUser" , user._id)
 
       socket.current.on("getUsers", (users) => {
-        console.log("userss", users)
         let temp = []
         users.forEach(u => temp.push(u.userId))
-        set_onlineusers(temp.filter(t => user.following.includes(t)));
-        
+        set_onlineusers(temp.filter(t => user.following.includes(t)));     
       });
-
+      
 }, [user])
 
 
   return (<main className=""> { isMobileDevice ? 
     <article>
-       <MobileVersion_Chat chatingwith={chatingwith} set_chatingwith={set_chatingwith} socket={socket} arrivalmessage={arrivalmessage} onlineusers={onlineusers} set_onlineusers={set_onlineusers} friends={friends} setfriends={setfriends} set_chatingWith_name={set_chatingWith_name} chatingWith_name={chatingWith_name} /> 
+       <ChatMobileVersion chatingwith={chatingwith} set_chatingwith={set_chatingwith} socket={socket} arrivalmessage={arrivalmessage} onlineusers={onlineusers} set_onlineusers={set_onlineusers} friends={friends} setfriends={setfriends} set_chatingWith_name={set_chatingWith_name} chatingWith_name={chatingWith_name} /> 
     </article>
             :
     <article className="flex">
@@ -83,7 +75,7 @@ useEffect(() => {
         </section>
 
         <section className="w-[50%] mt-from-nav shadow-2xl">
-          <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage} friends={friends} chatingWith_name={chatingWith_name}/>
+          <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage}  chatingWith_name={chatingWith_name}/>
         </section>
 
         <section className="w-1/4 lg:w-[19%] lg:ml-[1%]">
@@ -97,7 +89,7 @@ useEffect(() => {
 }
 
 
-const MobileVersion_Chat = ({ chatingwith , set_chatingwith , socket , arrivalmessage , onlineusers , set_onlineusers , friends, setfriends , chatingWith_name , set_chatingWith_name}) => {
+const ChatMobileVersion = ({ chatingwith , set_chatingwith , socket , arrivalmessage , onlineusers , set_onlineusers , friends, setfriends , chatingWith_name , set_chatingWith_name}) => {
 
   const [ currentpage , set_currentpage ] = useState("chatbox")
 

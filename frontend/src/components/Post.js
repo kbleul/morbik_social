@@ -1,5 +1,5 @@
 
-import pp from "../assets/placeholder/black.png"
+import avatarimg from "../assets/placeholder/black.png"
 import { useState } from "react"
 
 import { useAuthContext } from "../customHooks/useMyContext"
@@ -9,7 +9,7 @@ import { POST_ACTIONS } from "../contex/postContext"
 
 
 const Post = () => {
-  const { user, dispatch } = useAuthContext()
+  const { user } = useAuthContext()
   const { dispatch: post_dispatch } = usePostContext()
 
   const [disc, set_disc] = useState("")
@@ -17,22 +17,19 @@ const Post = () => {
   const [src, set_src] = useState(null)
 
 
-
-  const previewImgData = (uploaded) => {
+const previewImgData = (uploaded) => {
     if (uploaded) {
       const fileReader = new FileReader();
 
       fileReader.readAsDataURL(uploaded);
-      fileReader.addEventListener("load", function () {
-        set_src(this.result)
-      });
+      fileReader.addEventListener("load", function () {  set_src(this.result)  });
     }
-  }
+}
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault()
 
-    if (file && disc === "" ) {set_disc("...")}
+    if (file && disc === "" ) { set_disc("...") }
     
     if (file && disc !== "") {
       const formData = new FormData();
@@ -46,11 +43,8 @@ const Post = () => {
         }
       }
 
-
       let sendpost = await fetch(`api/share/image`, options)
-
       let json = await sendpost.json()
-
 
       options = {
         method: "PUT",
@@ -64,20 +58,15 @@ const Post = () => {
       sendpost = await fetch(`api/share/${json._id}`, options)
 
       let json_two = await sendpost.json()
-      console.log("json_two",json,"-----",json_two)
-
 
       set_src(null)
       set_file(null)
       set_disc("")
 
       post_dispatch({ type: POST_ACTIONS.ADDPOST, payload: { ...json, desc: json_two.desc } })
-
-
     }
 
     else if (disc !== "") {
-
       const options = {
         method: "POST",
         headers: {
@@ -88,25 +77,21 @@ const Post = () => {
       }
 
       const sendpost = await fetch(`api/share/image`, options)
-
       let json_two = await sendpost.json()
-
-      console.log("json_two",json_two)
 
       set_src(null)
       set_file(null)
       set_disc("")
 
       post_dispatch({ type: POST_ACTIONS.ADDPOST, payload: json_two })
-
     }
 
-  }
+}
 
 
   return (
     <div className="w-[90%] md:w-[60%] ml-[5%] md:ml-0 mt-40 md:mt-4 flex">
-      <img src={pp} alt="profile" className='w-16 h-16 rounded-full self-center' />
+      <img src={user.profilePicture === "" ? avatarimg : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-16 h-16 rounded-full self-center' />
 
       <form onSubmit={e => handleSubmit(e)} encType="multipart/form-data" className="ml-4 w-4/5">
         <textarea value={disc} onChange={e => set_disc(e.target.value)} placeholder="What's on your mind ?" className="text-xl py-4 px-2 border-b-2 focus:outline-0 outline-0 w-full" />

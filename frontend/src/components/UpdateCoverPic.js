@@ -1,5 +1,5 @@
 import { useState } from "react"
-import blackimg from "../assets/placeholder/black.png"
+import coverimg from "../assets/placeholder/cover.jpg"
 import { AUTH_ACTIONS } from "../contex/authContext"
 import { useAuthContext } from "../customHooks/useMyContext"
 
@@ -10,43 +10,42 @@ const UpdateCoverPic = ( { set_currenttask } ) => {
     const [ file , set_file ] = useState(null)
     const [ src , set_src ] = useState(null)
 
-    const getImgData = (uploaded) => {
-        if (uploaded) { 
-          const fileReader = new FileReader();
-  
-          fileReader.readAsDataURL(uploaded);
-          fileReader.addEventListener("load", function () {
-            set_src(this.result)
-          });    
-        }
-      }
+const getImgData = (uploaded) => {
+    if (uploaded) { 
+      const fileReader = new FileReader();
 
-    const postCoverPicture = async (e) => {
-        e.preventDefault()
-        
-        if(file){
-          const formData = new FormData();
+      fileReader.readAsDataURL(uploaded);
+      fileReader.addEventListener("load", function () {
+        set_src(this.result)
+      });    
+    }
+}
+
+const postCoverPicture = async (e) => {
+    e.preventDefault()
+    
+    if(file){
+      const formData = new FormData();
+
+          formData.append('cover', file);
+
+      fetch(`/api/user/cover/updateCover/${user._id}`,
+        {    
+          method: 'PUT',   
+          body: formData,
+          headers : { "Authorization" : `Bearer ${user.token}`}
+        }
   
-              formData.append('cover', file);
-  
-          fetch(`/api/user/cover/updateCover/${user._id}`,
-            {    
-              method: 'PUT',   
-              body: formData,
-              headers : { "Authorization" : `Bearer ${user.token}`}
-            }
-      
-          ).then((response) => response.json())
-            .then((result) => {  
-              dispatch( { type : AUTH_ACTIONS.UPDATE_INFO , payload : {...user, coverPicture : result.coverPicture}})
-                set_currenttask("others")
-                set_src(null)
-                set_file(null)
-                console.log(user)
-            })
-              .catch((error) => {  console.error('Error:', error);  });
-      }
-      }
+      ).then((response) => response.json())
+        .then((result) => {  
+          dispatch( { type : AUTH_ACTIONS.UPDATE_INFO , payload : {...user, coverPicture : result.coverPicture}})
+            set_currenttask("others")
+            set_src(null)
+            set_file(null)
+        })
+          .catch((error) => {  console.error('Error:', error);  });
+  }
+}
 
     return (<form  onSubmit={e => postCoverPicture(e)} className="flex flex-col w-full md:w-1/2 md:ml-[25%]">
         <label className="text-center">Set cover picture</label>
@@ -58,12 +57,12 @@ const UpdateCoverPic = ( { set_currenttask } ) => {
 
         <div className="w-full md:w-1/2 md:ml-[25%] flex justify-end items-center">
         { src ? <div className="w-full relative flex justify-center" >
-            <img className="w-full h-[50vh] mt-12 " src={src} alt="cover picture"/>
+            <img className="w-full h-[50vh] mt-12 " src={src} alt="cover"/>
             <p className="absolute top-0 left-[47%] text-4xl text-red-600 rounded-full hover:text-red-400 " 
             onClick={() => { set_file(null); set_src("")}}>x</p>
             </div> : 
             <div className="w-full relative flex justify-center" >
-            <img className="w-full h-[50vh] mt-12" src={blackimg} alt="default profile"/>
+            <img className="w-full h-[50vh] mt-12" src={coverimg} alt="default profile"/>
             </div>
         }
         </div>

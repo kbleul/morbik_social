@@ -17,17 +17,15 @@ const SecondaryNav = () => {
   const {  dispatch : post_dispatch   } = usePostContext()
   const { chatnotifications , othernotifications } = useNotificContext()
 
-
-
   const [ menuon , set_menuon] = useState(false)
 
 
-    const logout = () => {
-      localStorage.removeItem("user")
- // update auth context
-     dispatch({ type : AUTH_ACTIONS.LOGOUT })
-     post_dispatch({ type : POST_ACTIONS.CLEAR })
-    }
+const logout = () => {
+  localStorage.removeItem("user")
+  
+  dispatch({ type : AUTH_ACTIONS.LOGOUT })
+  post_dispatch({ type : POST_ACTIONS.CLEAR })
+}
 
   return (<article className="">
     <section className="flex justify-center" >
@@ -54,7 +52,7 @@ const SecondaryNav = () => {
 
         <Link to={`/myhome/${user._id}`} className="w-1/2 flex justify-end items-center">
            <p className="w-4/5 justify-self-end text-white font-bold text-end pr-[2%]">{user.username}</p>
-           <img src={ pp } alt="profile" className='w-8 h-8 md:w-10 md:h-10 rounded-full mr-4 md:mr-16'/>
+           <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}` } alt="profile" className='w-10 h-10 rounded-full mr-4 md:mr-16'/>
         </Link>
 
     </section>

@@ -1,5 +1,5 @@
 
-import { useEffect , useState } from "react"
+import { useEffect , useState , useCallback } from "react"
 import { useParams, Link } from "react-router-dom"
 
 import avatar from "../assets/placeholder/black.png"
@@ -13,15 +13,15 @@ import Postcard from "../components/Postcard"
 const Home = () => {
 
   const  { user  } = useAuthContext()
+  const  { userposts  , dispatch_userposts} = usePostContext()
+
   const { id } = useParams();
 
-  const  { userposts , dispatch , dispatch_userposts} = usePostContext()
   const [ currentPerson , set_currentPerson ] = useState(null)
-
   const [ relationlist , set_relationlist ] = useState([])
   const [relation_type , set_relation_type] = useState("following")
 
-  const getUser = async (userid) => {
+const getUser = useCallback( async (userid) => {
     const options = {
       method : "GET",
       headers : { "Authorization" : `Bearer ${user.token}` }
@@ -36,68 +36,53 @@ const Home = () => {
       window.scrollTo(0, 0);
     }
 
-}
+}, [user.token , set_currentPerson])
 
-  const fetchPost = async () => { 
-    const options = {
-      method : "GET",
-      headers : { "Authorization" : `Bearer ${user.token}` }
-    }
 
-    const url = id !== user._id ?
-                `api/posts/current/${id}` : `api/posts/current`
-    const getpost = await fetch(url, options)
 
-    let json = await getpost.json()
-
-    console.log("json" , json)
-
-    if(getpost.ok) {
-      dispatch_userposts({ type : POST_ACTIONS.GETALL , payload : json })
-    }
-
-   // fetchRelationships("following")
-
-  }
-
-  const fetchRelationships = async (type) => {
+const fetchRelationships = useCallback( async (type) => {
     const options = {
           method : "GET",
           headers: { "Authorization" : `Bearer ${user.token}` },
     }
 
         const url = id !== user._id ? `api/${type}/${id}` : `api/${type}`
-        console.log("url",url)
         const response = await fetch( url , options)
 
         const json = await response.json()
 
-console.log("rel,",response)
         if(response.ok) { set_relationlist(json) }
-        
 
         set_relation_type(type)
-
-  }
+},[id,user._id,user.token])
 
   //get followers and following list
 
-  useEffect(() => { console.log("run")
+  useEffect(() => { 
 
-
-    if(id !== user._id) {  
-      console.log("iddd", id)
-      getUser(id)  }
+    if(id !== user._id) { getUser(id)  }
     else { set_currentPerson(user) }
 
-  fetchRelationships("following")
+    const fetchPost = async () => { 
+      const options = {
+        method : "GET",
+        headers : { "Authorization" : `Bearer ${user.token}` }
+      }
+  
+      const url = id !== user._id ?
+                  `api/posts/current/${id}` : `api/posts/current`
+      const getpost = await fetch(url, options)
+  
+      let json = await getpost.json()
+  
+      if(getpost.ok) {
+        dispatch_userposts({ type : POST_ACTIONS.GETALL , payload : json })
+      }
+  
+    }
        fetchPost()
-
-  }, [id])
-
-  useEffect(() => {
-
-  },[currentPerson])
+       fetchRelationships("following")
+  }, [ id , user ,  getUser , dispatch_userposts , fetchRelationships ])
 
 
   return (<main>

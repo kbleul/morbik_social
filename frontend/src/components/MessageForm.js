@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { useAuthContext } from "../customHooks/useMyContext"
 import { useMediaQuery } from 'react-responsive';
+import { useAuthContext } from "../customHooks/useMyContext"
 
 const MessageForm = ({ chatingwith , allmessages , socket }) => {
     
@@ -10,9 +10,8 @@ const MessageForm = ({ chatingwith , allmessages , socket }) => {
     const [ chatingWith  ] = chatingwith
     const [  , set_messages ] = allmessages
 
-    const isMobileDevice = useMediaQuery({
-     query: "(max-device-width: 768px)",
-   });
+    const isMobileDevice = useMediaQuery({ query: "(max-device-width: 768px)", });
+    
 
 const sendMessage = async ( json ) => {
     const options = {
@@ -24,22 +23,18 @@ const sendMessage = async ( json ) => {
           },
      }
 
-     socket.current.emit("sendMessage", {            senderId : user._id,
+     socket.current.emit("sendMessage", {            
+          senderId : user._id,
           receiverId :chatingWith,
           text : message
      })
-console.log(user._id,
-     chatingWith,
-     message)
-  const response = await fetch(`/api/message/`, options)
+
+    const response = await fetch(`/api/message/`, options)
 
      if(response.ok) { 
-          console.log("sent one")  
           const jsontwo = await response.json()
           set_messages(prev => [...prev , jsontwo])
           set_message("")
-     
-    
      }
 
 }
@@ -51,11 +46,8 @@ const processSendMessage = async () => {
           headers : { "Authorization": `Bearer ${user.token}` }
           }
      
-
      let response = await fetch(`api/conversation/between/${user._id}/${chatingWith}`, options)
-
      let json = await response.json()
-
 
      if(json !== null) { await sendMessage(json) } 
      else {

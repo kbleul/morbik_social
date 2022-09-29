@@ -1,19 +1,23 @@
-import avatar from "../assets/placeholder/black.png"
-import { useAuthContext} from "../customHooks/useMyContext"
 import { useState } from "react"
 import {  Link } from "react-router-dom"
 
+import avatar from "../assets/placeholder/black.png"
+
+import { useAuthContext} from "../customHooks/useMyContext"
 
 import { AUTH_ACTIONS } from "../contex/authContext"
 
+
 const Postcard = ({ post , issuggestion , is_mypost }) => {
+
   const  { user , dispatch } = useAuthContext()
+
   const  [likes , setlikes] = useState(post.likes.length)
   const  [liked , setliked] = useState(post.likes.includes(user._id))
   const [ isfollowed , set_isfollowed ] = useState(false)
 
 
- let sec_style =  post.img === "" ? "max-h-[55vh] w-[96%] md:w-[80%] ml-[2%] md:ml-[10%] lg:w-[96%] lg:ml-[2%] mb-[8%]" : "h-[50vh] w-[96%] md:w-[80%] ml-[2%] md:ml-[10%] mb-[8%] lg:w-[96%] lg:ml-[2%]" 
+ let sec_style =  post.img === "" ? "max-h-[55vh] w-[96%] md:w-[80%] ml-[2%] md:ml-[10%] lg:w-[96%] lg:ml-[2%] mt-2  mb-[8%]" : "h-[50vh] w-[96%] md:w-[80%] ml-[2%] md:ml-[10%] mb-[8%] lg:w-[96%] lg:ml-[2%] mt-2 " 
 
 const likeUnlike_post = async () => {
     const options = {
@@ -42,12 +46,9 @@ const handleFollow = async () => {
     }
 
     let response 
-    if(isfollowed) {
-      response = await fetch(`api/user/unfollow/${post.userId}`, options)
-    }
-    else {
-      response = await fetch(`api/user/follow/${post.userId}`, options)
-    }
+    
+    if(isfollowed) {  response = await fetch(`api/user/unfollow/${post.userId}`, options) }
+    else {  response = await fetch(`api/user/follow/${post.userId}`, options)  }
 
     const json = await response.json()
     
@@ -56,8 +57,6 @@ const handleFollow = async () => {
         set_isfollowed(true)
         const tempfollowing = [post.userId, ...user.following]
         const newobj = {...user , following : tempfollowing }
-
-        console.log("new obj", newobj)
   
         dispatch({ type : AUTH_ACTIONS.UPDATE_INFO , payload : newobj})
       }
@@ -65,7 +64,7 @@ const handleFollow = async () => {
         set_isfollowed(false)
         const tempfollowing = user.following.filter(tempf => tempf !== post.userId)
         const newobj = {...user , following : tempfollowing }
-  
+
         dispatch({ type : AUTH_ACTIONS.UPDATE_INFO , payload : newobj})
        }
     }
@@ -92,16 +91,16 @@ const handleFollow = async () => {
             <p className="text-gray-400 text-sm">{post.createdAt}</p>
         </div>
 
-        <p className={ post.img === "" ? "p-2 max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll" : ""}>{post.desc}</p>
+        <p className={ post.img === "" ? " max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll ml-12" : "ml-12"}>{post.desc}</p>
       </section>
     }
 
-   { post.img !== ""  && <img src={"/public/data/uploads/" +post.img} alt={post.desc} className="w-full h-[80%]"/>}
+   { post.img !== ""  && <img src={"/public/data/uploads/" +post.img} alt={post.desc} className="w-full lg:w-4/5 lg:ml-[10%] h-[80%]"/>}
    {
       is_mypost && <p className="p-2 text-center">{post.desc}</p>
    }
 
-      <div className={is_mypost ? "flex justify-between w-[80%] ml-[10%]" : "flex justify-between px-8 pt-4"}>
+      <div className={is_mypost ? "flex justify-between w-[80%] ml-[10%]" : "flex justify-between px-8 pt-4 mx-[10%]"}>
           <div className="flex items-center justify-center" onClick={likeUnlike_post} >
           <p>{likes}</p>
           {liked  ?

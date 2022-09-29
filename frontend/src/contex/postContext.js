@@ -1,6 +1,4 @@
-import { createContext , useReducer , useEffect  } from "react"
-// import {useFetchPosts} from "../customHooks/useFetchPosts"
-
+import { createContext , useReducer } from "react"
 export const PostContext = createContext()
 
 export const POST_ACTIONS = {
@@ -21,6 +19,9 @@ const postReducer = ( state , action ) => {
             
         case POST_ACTIONS.CLEAR :
             return []
+
+        default :
+            return state
     }
 }
 
@@ -29,6 +30,8 @@ const suggestedReducer = ( state , action ) => {
     switch(action.type) {
         case POST_ACTIONS.GETALL:
             return action.payload
+        default: 
+            return state
     }
 }
 
@@ -36,6 +39,8 @@ const userPostReducer = ( state , action ) => {
     switch(action.type) {
         case POST_ACTIONS.GETALL :
             return action.payload
+        default: 
+            return state
     }
 }
 

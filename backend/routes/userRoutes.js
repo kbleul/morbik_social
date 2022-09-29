@@ -1,9 +1,10 @@
 const router = require("express").Router()
 const requireAuth = require("../middleware/requireAuth")
+
 const { updateUser , updateProfilePic , updateCoverPic , deleteUser , getUser , followUser , unfollowUser, getFollowers, getFollowing , getFriendFollowers , getFriendFollowing , getSearch} = require("../controllers/userController")
 
 
-//run authm middleware
+    //run authm middleware
     router.use(requireAuth)
 
 //UPDATE USER PROFILE PIC

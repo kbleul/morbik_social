@@ -19,16 +19,16 @@ const Signup = () => {
 
 
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault()
 
     const ismatch = matchPasswords("handler")
 
       if( ismatch ) { await signup(email , username , password) }
-  }
+}
 
 
-  const matchPasswords = type => {
+const matchPasswords = type => {
     if(password !== confirm_password) {
       set_showerror(true)
       if(type === "pass") {  confirminput.current.focus()  }
@@ -44,13 +44,13 @@ const Signup = () => {
       return true 
     }
 
-  }
+}
 
   return (
     <section className="bg-neutral-100 h-[93vh]">
        <h2 className="ml-8 md:ml-16 mt-12 pl-4 font-bold text-2xl md:text-3xl border-l-4 border-amber-300">Morbik Social</h2>
 
-    <div className="flex flex-col w-[90%] md:w-2/5 ml-[5%] md:ml-[30%] mt-[10%] md:mt-[4%] shadow-lg bg-white">
+    <div className="flex flex-col w-[90%] md:w-[70%] lg:w-1/2 ml-[5%] md:ml-[15%] lg:ml-[25%] mt-[10vh] md:mt-[4%] shadow-lg bg-white">
 
       <form onSubmit={e => handleSubmit(e)} className="flex flex-col w-full">
         <input className="w-[90%] ml-[5%] md:w-4/5 md:ml-[10%] py-2 px-2 md:px-4 mt-8 border-2 border-gray-300 rounded-md mb-4 " type="text" value={email} placeholder="Email" name="email" onChange={e => setemail(e.target.value)} required/>
@@ -72,7 +72,7 @@ const Signup = () => {
           </div>
         }
 
-        <button className="w-1/2 md:w-2/5 ml-[25%] md:ml-[30%] mt-8 mb-12 md:mb-4 py-2 px-4 bg-gray-700 hover:bg-gray-800 text-white font-bold rounded-full">Signup</button>
+        <button className="w-1/2 md:w-2/5 ml-[25%] md:ml-[30%] mt-8 mb-10 md:mb-20 py-2 px-4 bg-gray-700 hover:bg-gray-800 text-white font-bold rounded-full">Signup</button>
       </form>
 
     </div>

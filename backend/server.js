@@ -14,9 +14,7 @@ var path = require('path');
 
 const multer  = require('multer')
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, 'public/data/uploads/')
-    },
+    destination: function (req, file, cb) {  cb(null, 'public/data/uploads/') },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
 
@@ -25,12 +23,9 @@ const storage = multer.diskStorage({
       cb(null, fullImgName)
 
       req.img = fullImgName
-
     }
   })
   
-
-
 const upload = multer({ storage: storage })
 
 const app = express()
@@ -47,17 +42,11 @@ app.use("/public", express.static(path.join(__dirname, 'public')));
     })
 
 
-    mongoose.connect(process.env.MONGO_URI)
-                .then(() => {
-                    app.listen(process.env.PORT , () => { console.log("Server is running at " + process.env.PORT )})
-                })
-                    .catch(error => console.log(error))
-
-
-   
-       
-
-
+  mongoose.connect(process.env.MONGO_URI)
+            .then(() => {
+                app.listen(process.env.PORT , () => { console.log("Server is running at " + process.env.PORT )})
+             })
+              .catch(error => console.log(error))
     
     app.use("/api/auth", userAuthRoutes)
     app.use("/api/user/profile", upload.single('avatar'), userRoutes )

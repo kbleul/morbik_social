@@ -1,7 +1,7 @@
-import Navbar from "./components/navbar/Navbar"
-import { AUTH_ACTIONS } from "./contex/authContext"
-
 import {  Routes , Route , Navigate } from "react-router-dom"
+
+import Navbar from "./components/navbar/Navbar"
+
 import Feed from "./pages/Feed"
 import Home from "./pages/Home"
 import Login from "./pages/Login"

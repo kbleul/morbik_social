@@ -9,7 +9,7 @@ export const useSignup = () => {
     const [isloading , setisloading] = useState(null)
     
     const { dispatch } = useAuthContext()
-    const {  set_isnew } = useNewUserContext()
+    const { set_isnew } = useNewUserContext()
 
     const signup = async ( email , username , password ) => {
         seterror(null)
@@ -24,9 +24,6 @@ export const useSignup = () => {
 
         const response = await fetch("/api/auth/signup" , options )
         const json = await response.json()
-
-        console.log(json)
-
 
         if(!response.ok) {
             setisloading(false)
@@ -45,7 +42,6 @@ export const useSignup = () => {
           
             setisloading(false)
             return json
-
         }
     }
 

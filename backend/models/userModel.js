@@ -81,9 +81,7 @@ userSchema.statics.signup = async function ( username ,email , password ) {
     //validation
     if(!username || !email || !password) { throw Error("All fields must be filled") }
 
-
     if(!validator.isEmail(email)) { throw Error("Email is not valid") }
-
 
     if(!validator.isStrongPassword(password)) { throw Error("Please use a strong password. Password should include a capital letter , small letter , number and symbol") }
 
@@ -96,21 +94,18 @@ userSchema.statics.signup = async function ( username ,email , password ) {
          if(username_exists ){ throw Error("Username is already taken")  }
 
         //hashing
-
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password , salt)
        
     const user = await this.create( { username , email , password : hash } )
 
     return user
-
 }
 
 
 userSchema.statics.login = async function( username_or_email , password ) {
     //validation
     if(!username_or_email || !password) { throw Error("All fields must be filled") }
-
 
     //if it not an email address check if it is a username instead
     if(!validator.isEmail(username_or_email)) { 
@@ -119,26 +114,24 @@ userSchema.statics.login = async function( username_or_email , password ) {
 
         if(!user ){ throw Error("Username not found")  }
 
-
         const result = await matchPassword(password , user.password)
 
         if(!result) throw Error("Incorrect Password") 
    
         return user
-
      }
 
       //check if email exists
       const email = username_or_email
       const user = await this.findOne( { email } )
+
       if(!user ){ throw Error("Email address not found")  }
 
-             const result = await matchPassword(password , user.password)
+        const result = await matchPassword(password , user.password)
 
      if(!result) throw Error("Incorrect Password") 
 
      return user
-
 }
 
 

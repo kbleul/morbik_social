@@ -7,11 +7,12 @@ import { useNewUserContext } from "./useMyContext"
 
 
 export const useLogin = () => {
-    const [error , seterror] = useState(null)
-    const [isloading , setisloading] = useState(null)
     
     const { dispatch } = useAuthContext()
     const { set_isnew } = useNewUserContext()
+
+    const [error , seterror] = useState(null)
+    const [isloading , setisloading] = useState(null)
 
 
     const login = async ( username_or_email , password ) => {
@@ -24,10 +25,8 @@ export const useLogin = () => {
             body : JSON.stringify({username_or_email , password})
         }
 
-
         const response = await fetch("/api/auth/login" , options )
         const json = await response.json()
-
 
         if(!response.ok) {
             setisloading(false)
@@ -43,13 +42,11 @@ export const useLogin = () => {
 
             // update auth context
             dispatch({ type : AUTH_ACTIONS.LOGIN , payload : json })
-            console.log(json)
-
             setisloading(false)
+
             return json
         }
     }
 
     return { login , isloading , error }
-
 }

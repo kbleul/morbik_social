@@ -12,7 +12,6 @@ const createReadableDate = (date) => {
 
 const addMessage = async (req, res) => { 
     try {
-console.log(req.user._id.toString() , req.body.sender)
       //check if sender and current user match
       if(req.user._id.toString() !== req.body.sender )
             {   throw "Sender is not logged in";    }
@@ -34,6 +33,7 @@ console.log(req.user._id.toString() , req.body.sender)
       try {
          const { _id , sender , conversationId , text , createdAt} = await newMessage.save();
         res.status(200).json({ _id , sender , conversationId , text , createdAt : createReadableDate(createdAt) });
+
       } catch (err) {  res.status(500).json(err);  }
 }
 
@@ -43,17 +43,15 @@ const getMessages = async (req, res) => {
       const messages = await Message.find({
         conversationId: req.params.conversationId,
       });
-console.log("messages",messages)
 
       messages.forEach(message => {
         const { _id , sender , conversationId , text , createdAt} = message
         finalarr.push({ _id , sender , conversationId , text , createdAt : createReadableDate(createdAt) })
       })
-console.log(finalarr.length)
+
       res.status(200).json(finalarr);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+
+    } catch (err) {  res.status(500).json(err);   }
   }
 
 module.exports = {

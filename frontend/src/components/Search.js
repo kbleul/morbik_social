@@ -12,30 +12,26 @@ const Search = () => {
 
 
 const getSearchSuggestions = async(word) => {
-      const options = {
-        method : "PUT",
-        headers :  {
-            "Authorization": `Bearer ${user.token}`,
-            "content-Type": "application/json"
-        },
-        body : JSON.stringify({"word" : word})
-      }
+    const options = {
+      method : "PUT",
+      headers :  {
+          "Authorization": `Bearer ${user.token}`,
+          "content-Type": "application/json"
+      },
+      body : JSON.stringify({"word" : word})
+    }
 
-      if(word !== "" || word !== " ")      {
+    if(word !== "" || word !== " ")      {
       const fetchquery = await fetch(`api/user/search`, options)
 
       const json = await fetchquery.json()
       setsuggestions(json)
     }
-
-   
-      
-  }
+}
 
 
   useEffect(() => {
     if(search === "" || search === " ") {  setsuggestions([]) ;  }
-    console.log("search ", search === "")
   },[search , setsuggestions])
 
 

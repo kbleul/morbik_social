@@ -1,6 +1,6 @@
 
 import {useAuthContext} from "../customHooks/useMyContext"
-import { useState , useEffect } from 'react'
+import { useState , useEffect , useCallback } from 'react'
 import avatar from "../assets/placeholder/black.png"
 
 const SingleOnlineFriend = ({onlineuser_id , chatingwith , set_currentpage , set_chatingWith_name }) => {
@@ -10,7 +10,7 @@ const SingleOnlineFriend = ({onlineuser_id , chatingwith , set_currentpage , set
 
     const [ currentuser , set_currentuser ] = useState(null)
 
-const getOnlineUsers = async () => {
+const getOnlineUsers = useCallback( async () => {
     const options = {
         method : "Get",
         headers : { "Authorization": `Bearer ${user.token}` }
@@ -20,10 +20,9 @@ const getOnlineUsers = async () => {
     const { _id , username, profilePicture } = await response.json()
         
         set_currentuser({ _id , username, profilePicture })
-    console.log("json", { _id , username, profilePicture })
-}
+}, [ user.token , set_currentpage ])
   
-useEffect(() => {  getOnlineUsers()  },[])
+useEffect(() => {  getOnlineUsers()  }, [getOnlineUsers])
 
 
  return (  <section  className="w-full">

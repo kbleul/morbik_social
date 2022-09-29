@@ -1,10 +1,7 @@
 const Conversation = require("../models/conversationModel");
 const mongoose = require("mongoose");
 
-
-
 const addConversation = async (req, res) => {
-
 
   try {
 
@@ -62,12 +59,11 @@ const getConversation = async (req, res) => {
       });
 
       res.status(200).json(conversation);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+
+    } catch (err) {  res.status(500).json(err);  }
 }
 
-const getBetweenConversation = async (req, res) => { console.log(req.params.firstUserId , req.params.secondUserId )
+const getBetweenConversation = async (req, res) => { 
     try {
       if( !mongoose.Types.ObjectId.isValid(req.params.firstUserId)  || !mongoose.Types.ObjectId.isValid(req.params.secondUserId)) 
               {   throw "user id is not valid";    }
@@ -80,9 +76,8 @@ const getBetweenConversation = async (req, res) => { console.log(req.params.firs
         members: { $all: [req.params.firstUserId, req.params.secondUserId] },
       });
       res.status(200).json(conversation)
-    } catch (err) {
-      res.status(500).json(err);
-    }
+
+    } catch (err) {  res.status(500).json(err);   }
 }
 
 module.exports = {

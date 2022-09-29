@@ -1,12 +1,9 @@
-import {useAuthContext} from "../customHooks/useMyContext"
 import SingleOnlineFriend from "../components/SingleOnlineFreinds"
+
 import { useMediaQuery } from 'react-responsive';
-
-
 
 const OnlineFriends = ({chatingwith ,  onlineusers  , set_currentpage , set_chatingWith_name }) => {
 
-    const  { user } = useAuthContext()
     const isMobileDevice = useMediaQuery({ query: "(max-device-width: 768px)", });
 
 return(

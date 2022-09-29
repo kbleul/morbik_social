@@ -1,5 +1,3 @@
-
-
 const router = require("express").Router();
 const  { addConversation, getConversation, getBetweenConversation } = require("../controllers/conversationController")
 
@@ -11,5 +9,6 @@ router.get("/:userId", getConversation );
 
 // get Conversation between two users
 router.get("/between/:firstUserId/:secondUserId", getBetweenConversation );
+
 
 module.exports = router;
