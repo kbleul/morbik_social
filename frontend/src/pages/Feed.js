@@ -37,11 +37,11 @@ const Feed = () => {
         <MobileVersionFeed feedposts={feedposts} feedposts_suggested={feedposts_suggested} post_isloading={post_isloading} sugg_isloading={sugg_isloading} post_error={post_error} sugg_error={sugg_error} /> :
         <>
         <section className="mt-[9rem] md:mt-from-nav flex">
-          <p className="mt-8 w-1/2 font-content-spliter text-[1.3rem] font-bold self-end border-l-4 border-orange-500 pl-2 ml-20 hidden md:block cursor-pointer">My Feed</p>
+          <p className="mt-8 w-[20%] font-content-spliter text-[1.3rem] font-bold self-end border-l-4 border-orange-500 pl-2 ml-2 hidden md:block cursor-pointer">My Feed</p>
 
           <Post />
 
-          <p className="mt-8 w-1/2 font-content-spliter text-[1.3rem] font-bold self-end border-r-4 border-green-600 pr-2 mr-20 text-right hidden md:block cursor-pointer">Suggested</p>
+          <p className="mt-8 w-[20%] font-content-spliter text-[1.3rem] font-bold self-end border-r-4 border-green-600 pr-2 mr-2 text-right hidden md:block cursor-pointer">Suggested</p>
         </section>
 
         <section className="grid grid-cols-2 gap-1">

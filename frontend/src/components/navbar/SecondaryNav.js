@@ -35,7 +35,7 @@ const SecondaryNav = () => {
         <div className="w-1/2 py-2 flex items-center">
 
           <button onClick={() => set_menuon(prev_menuon => !prev_menuon)} >
-            <svg  className="ml-4 md:ml-8" xmlns="http://www.w3.org/2000/svg" width="1.8em" height="1.8em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" strokeWidth="2" d="M4 8h24M4 16h24M4 24h24"/></svg>
+            <svg  className="ml-4 md:ml-8" xmlns="http://www.w3.org/2000/svg" width="1.8em" height="1.8em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8h24M4 16h24M4 24h24"/></svg>
           </button>
 
           <Link to="/chat" className="ml-8 md:ml-16 relative">
@@ -54,7 +54,7 @@ const SecondaryNav = () => {
 
         <Link to={`/myhome/${user._id}`} className="w-1/2 flex justify-end items-center">
            <p className="w-4/5 justify-self-end text-white font-bold text-end pr-[2%]">{user.username}</p>
-           <img src={ user.profilePicture === "" ? pp : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-8 h-8 md:w-10 md:h-10 rounded-full mr-4 md:mr-16'/>
+           <img src={ pp } alt="profile" className='w-8 h-8 md:w-10 md:h-10 rounded-full mr-4 md:mr-16'/>
         </Link>
 
     </section>

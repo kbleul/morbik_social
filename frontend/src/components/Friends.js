@@ -1,12 +1,10 @@
-import {Users} from "../dummy"
-import Search from "../components/Search"
 import { useEffect , useState } from "react"
 import { useAuthContext } from "../customHooks/useMyContext"
 import pp from "../assets/placeholder/black.png"
 import { useMediaQuery } from 'react-responsive';
 
 
-const Friends = ({chatingwith , relation , onlineUsers , set_currentpage}) => {
+const Friends = ({ chatingwith , relation , onlineUsers , set_currentpage , set_chatingWith_name }) => {
 
     const  { user  } = useAuthContext()
 
@@ -32,8 +30,9 @@ const fetchRelationships = async () => {
             if(response.ok) { setfriends(json) }
 }
 
-const handleChatwith =  (id) => {
+const handleChatwith =  (id , uname) => {
     set_chatingWith(id)
+    set_chatingWith_name(uname)
     console.log("chatingWith",chatingWith)
     set_currentpage && set_currentpage("chatbox")
  }
@@ -47,13 +46,13 @@ useEffect(() => {
 
     return(<article className={!isMobileDevice && "mt-28 "}>
 
-   {!isMobileDevice && <h3 className="mt-4 mb-2 text-center text-xl font-content-spliter font-bold">Friends</h3>}
+   {!isMobileDevice && <h3 className="mt-4 mb-2 text-center text-xl font-content-spliter font-bold">{friends.length} Friends</h3>}
 
     <section className="h-[79vh] border-t-2 overflow-y-hidden hover:overflow-y-scroll">
-        <Search />
+
         { friends.map(tempf => (
-            <div key={tempf._id} className={isMobileDevice ? "w-full flex  items-center  ml-12 my-[7%]" : "w-full flex  items-center my-2" }
-                onClick={() => handleChatwith(tempf._id)}>
+            <div key={tempf._id} className={isMobileDevice ? "w-full flex  items-center  ml-12 my-[7%]" : "w-full flex  items-center md:ml-[17%] lg:my-4 mt-[8%] " }
+                onClick={() => handleChatwith(tempf._id , tempf.username)}>
                 <img className="w-12 h-12 rounded-full" src={ tempf.profilePicture === "" ? pp : `/public/data/uploads/${tempf.profilePicture}`} alt={tempf.username} />
                 <p className="w-full text-left text-base pl-4">{tempf.username}</p>
             </div>

@@ -78,7 +78,7 @@ const processSendMessage = async () => {
      }
 }
 
-    return(<article className={isMobileDevice ? "h-[10%] flex items-center ml-1" : "h-[20%] flex items-center" }>
+    return(<article className={isMobileDevice ? "h-[10vh] flex items-center ml-1" : "h-[20%] flex items-center" }>
              <textarea value={message} onChange={e => set_message(e.target.value)} placeholder="Message ..." className={isMobileDevice ? "py-1 border-b-2 focus:outline-0 outline-0 w-11/12 h-full px-2 mr-2 border" : "text-xl py-2 border-b-2 focus:outline-0 outline-0 w-11/12 h-full px-2 mr-2 border" } />
 
              <button onClick={processSendMessage} className={isMobileDevice ? "bg-green-700 border-none hover:bg-green-800 rounded-full w-8 h-8 flex justify-center items-center mr-2" : "bg-green-700 border-none hover:bg-green-800 rounded-full w-12 h-12 flex justify-center items-center mr-2"  } disabled={chatingWith === null ? true : false}>

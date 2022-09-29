@@ -102,7 +102,7 @@ console.log("rel,",response)
 
   return (<main>
 {currentPerson && <article>
-    <article className="mt-from-nav relative">
+    <article className="mt-24 relative">
       <Hero user={currentPerson}/>
     </article>
 
@@ -124,7 +124,7 @@ console.log("rel,",response)
     
    <div className="max-h-[60vh] md:h-[80vh] overflow-y-scroll  md:overflow-y-hidden md:hover:overflow-y-scroll border-r-2 border-gray-100 mt-[5%]" >
       { relationlist.map(person => (
-        <Link to={`/myhome/${person._id}`} className="flex items-center gap-2 px-20 py-2 hover:cursor-pointer hover:opacity-60" key={person.id}>
+        <Link to={`/myhome/${person._id}`} className="flex items-center gap-2 px-20 py-2 hover:cursor-pointer hover:opacity-60" key={person._id}>
           <img className='w-12 h-12 rounded-full' src={avatar} alt={person.username} />
           <h5 className="font-bold ml-2 font-serif">{ person.username }</h5>
         </Link>
@@ -138,7 +138,7 @@ console.log("rel,",response)
      { userposts.length === 0 && <p className="text-center text-blue-400 text-xl mt-32 col-span-2">No posts yet</p>}
 
       { userposts.map( post => (
-        <Postcard post={post} is_mypost={true}/>
+        <Postcard key={post._id} post={post} is_mypost={true}/>
       )) }
     </div>
    </section>

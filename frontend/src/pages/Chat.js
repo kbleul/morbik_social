@@ -19,15 +19,14 @@ const Chat = () => {
   const  { set_chatnotifications } = useNotificContext()
 
   const  [ chatingwith , set_chatingwith ] = useState(null)
+  const [ chatingWith_name , set_chatingWith_name ] = useState(null)
   const  [ arrivalmessage , set_arrivalmessage ] = useState(null)
   const  [ onlineusers , set_onlineusers ] = useState([])
   const  [ friends, setfriends ] = useState([])
   
 
   const socket = useRef()
-  const isMobileDevice = useMediaQuery({
-    query: "(max-device-width: 768px)",
-  });
+  const isMobileDevice = useMediaQuery({  query: "(max-device-width: 768px)",  });
 
   const addNotification = async(senderId) => {
    const options = {
@@ -74,19 +73,23 @@ useEffect(() => {
 
   return (<main className=""> { isMobileDevice ? 
     <article>
-       <MobileVersion_Chat chatingwith={chatingwith} set_chatingwith={set_chatingwith} socket={socket} arrivalmessage={arrivalmessage} onlineusers={onlineusers} set_onlineusers={set_onlineusers} friends={friends} setfriends={setfriends}/> 
+       <MobileVersion_Chat chatingwith={chatingwith} set_chatingwith={set_chatingwith} socket={socket} arrivalmessage={arrivalmessage} onlineusers={onlineusers} set_onlineusers={set_onlineusers} friends={friends} setfriends={setfriends} set_chatingWith_name={set_chatingWith_name} chatingWith_name={chatingWith_name} /> 
     </article>
             :
     <article className="flex">
-        <section className="w-[29%] mr-[1%]">
-          <OnlineFriends chatingwith={[chatingwith , set_chatingwith]} onlineusers={onlineusers} relation={[friends, setfriends]}/>
+
+        <section className="w-1/4 lg:w-[29%] lg:mr-[1%]">
+          <OnlineFriends chatingwith={[chatingwith , set_chatingwith]} onlineusers={onlineusers} set_chatingWith_name={set_chatingWith_name} />
         </section>
+
         <section className="w-[50%] mt-from-nav shadow-2xl">
-          <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage} />
+          <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage} friends={friends} chatingWith_name={chatingWith_name}/>
         </section>
-        <section className="w-[19%] ml-[1%]">
-          <Friends chatingwith={[chatingwith , set_chatingwith]} relation={[friends, setfriends]} onlineUsers={[onlineusers , set_onlineusers]}/>
+
+        <section className="w-1/4 lg:w-[19%] lg:ml-[1%]">
+          <Friends chatingwith={[chatingwith , set_chatingwith]} relation={[friends, setfriends]} onlineUsers={[onlineusers , set_onlineusers]} set_chatingWith_name={set_chatingWith_name} />
         </section>
+
     </article>
     }
     </main>
@@ -94,9 +97,10 @@ useEffect(() => {
 }
 
 
-const MobileVersion_Chat = ({ chatingwith , set_chatingwith , socket , arrivalmessage , onlineusers , set_onlineusers , friends, setfriends}) => {
+const MobileVersion_Chat = ({ chatingwith , set_chatingwith , socket , arrivalmessage , onlineusers , set_onlineusers , friends, setfriends , chatingWith_name , set_chatingWith_name}) => {
 
   const [ currentpage , set_currentpage ] = useState("chatbox")
+
   return (
     <article className="mt-[9.1rem]">
         <section className="font-content-spliter flex pb-2">
@@ -106,15 +110,15 @@ const MobileVersion_Chat = ({ chatingwith , set_chatingwith , socket , arrivalme
             {friends.length} Friends</button>
         </section>
 
-        <section className="w-dull  shadow-2xl">
+        <section className="w-full shadow-2xl">
          { currentpage === "chatbox" && 
-         <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage} /> }
+         <MessageBox chatingwith={[chatingwith , set_chatingwith]} socket={socket} arrivalmessage={arrivalmessage} chatingWith_name={chatingWith_name} /> }
 
          { currentpage === "friends" && 
-         <Friends chatingwith={[chatingwith , set_chatingwith]} relation={[friends, setfriends]} onlineUsers={[onlineusers , set_onlineusers]} set_currentpage={set_currentpage}/> }
+         <Friends chatingwith={[chatingwith , set_chatingwith]} relation={[friends, setfriends]} onlineUsers={[onlineusers , set_onlineusers]} set_currentpage={set_currentpage} set_chatingWith_name={set_chatingWith_name} /> }
 
          { currentpage === "online" && 
-         <OnlineFriends chatingwith={[chatingwith , set_chatingwith]} onlineusers={onlineusers} relation={[friends, setfriends]} set_currentpage={set_currentpage}/> }
+         <OnlineFriends chatingwith={[chatingwith , set_chatingwith]} onlineusers={onlineusers} relation={[friends, setfriends]} set_currentpage={set_currentpage} set_chatingWith_name={set_chatingWith_name} /> }
         </section>
     </article>
   )
@@ -123,12 +127,3 @@ const MobileVersion_Chat = ({ chatingwith , set_chatingwith , socket , arrivalme
 
 export default Chat
 
-/*
- <section className="w-[29%] mr-[1%]">
-            <OnlineFriends chatingwith={[chatingwith , set_chatingwith]} onlineusers={onlineusers} relation={[friends, setfriends]}/>
-  </section>
-
-  <section className="w-[19%] ml-[1%]">
-        <Friends chatingwith={[chatingwith , set_chatingwith]} relation={[friends, setfriends]} onlineUsers={[onlineusers , set_onlineusers]}/>
-  </section>
-*/
