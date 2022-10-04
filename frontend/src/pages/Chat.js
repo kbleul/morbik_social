@@ -14,11 +14,11 @@ const Chat = () => {
   const  { user } = useAuthContext()
   const  { set_chatnotifications } = useNotificContext()
 
-  const  [ chatingwith , set_chatingwith ] = useState(null)
+  const [ chatingwith , set_chatingwith ] = useState(null)
   const [ chatingWith_name , set_chatingWith_name ] = useState(null)
-  const  [ arrivalmessage , set_arrivalmessage ] = useState(null)
-  const  [ onlineusers , set_onlineusers ] = useState([])
-  const  [ friends, setfriends ] = useState([])
+  const [ arrivalmessage , set_arrivalmessage ] = useState(null)
+  const [ onlineusers , set_onlineusers ] = useState([])
+  const [ friends, setfriends ] = useState([])
 
   const socket = useRef()
   const isMobileDevice = useMediaQuery({  query: "(max-device-width: 768px)",  });
@@ -39,8 +39,14 @@ const addNotification = useCallback( async(senderId) => {
 
 
 useEffect(() => { 
-  socket.current = io("ws://localhost:8900")  
-  socket.current.on("getMessage", data => {
+  //socket.current = io("ws://localhost:8900")  
+  socket.current = io( process.env.Socketurl , {
+    headers : {
+      "user-agent" : "Mozilla"
+    }
+  })  
+
+  socket.current.on("getMessage", data => { console.log("got message")
     set_arrivalmessage({
       sender : data.senderId,
       text : data.text,

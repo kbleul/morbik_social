@@ -55,10 +55,10 @@ const matchPasswords = type => {
       <form onSubmit={e => handleSubmit(e)} className="flex flex-col w-full">
         <input className="w-[90%] ml-[5%] md:w-4/5 md:ml-[10%] py-2 px-2 md:px-4 mt-8 border-2 border-gray-300 rounded-md mb-4 " type="text" value={email} placeholder="Email" name="email" onChange={e => setemail(e.target.value)} required/>
 
-        <input className="w-[90%] ml-[5%] md:w-4/5 md:ml-[10%] py-2 px-2 md:px-4 mt-8 border-2 border-gray-300 rounded-md mb-4" type="text" value={username} placeholder="Username" name="username" onChange={e => setusername(e.target.value)} autocomplete="off" required/>
+        <input className="w-[90%] ml-[5%] md:w-4/5 md:ml-[10%] py-2 px-2 md:px-4 mt-8 border-2 border-gray-300 rounded-md mb-4" type="text" value={username} placeholder="Username" name="username" onChange={e => setusername(e.target.value)} autoComplete="off" required/>
 
         <input className="w-[90%] ml-[5%] md:w-4/5 md:ml-[10%] py-2 px-2 md:px-4 mt-8 border-2 border-gray-300 rounded-md mb-4" type="password" value={password} min="8" placeholder="Password" name="password" ref={ passinput }
-        onChange={e => setpassword(e.target.value) } onBlur={() => matchPasswords("pass")} autocomplete="off" required/>
+        onChange={e => setpassword(e.target.value) } onBlur={() => matchPasswords("pass")} autoComplete="off" required/>
 
         <input className="w-[90%] ml-[5%] md:w-4/5 md:ml-[10%] py-2 px-2 md:px-4 mt-8 border-2 border-gray-300 rounded-md mb-4" type="password" value={confirm_password} min="8" placeholder="Confirm Password" name="confirm" ref={ confirminput } onChange={e => set_confirmpassword(e.target.value)} onBlur={() => matchPasswords("pass")} required/>
 

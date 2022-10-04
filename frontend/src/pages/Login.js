@@ -30,11 +30,11 @@ const handleSubmit = async (e) => {
             <form onSubmit={e => handleSubmit(e)} className="flex flex-col mt-[5%] md:mt-[20%]">
                 <input className="md:w-[75%] w-4/5 ml-[10%] md:ml-[12.5%] md:py-4 py-3 px-4 md:px-8 mt-12 md:mt-8 rounded-full text-black" 
                     type="text" value={username_or_passw} placeholder="Email / Username" 
-                      onChange={ e => set_username_or_passw(e.target.value) } />
+                      onChange={ e => set_username_or_passw(e.target.value) } autoComplete="off"/>
 
                 <input className="md:w-[75%] w-4/5 ml-[10%] md:ml-[12.5%] md:py-4 py-3 px-4 md:px-8 mt-12 md:mt-8 rounded-full text-black" 
                   type="password" value={password} min="6" placeholder="Password" 
-                    onChange={ e => set_password(e.target.value) }/>
+                    onChange={ e => set_password(e.target.value) } autoComplete="off"/>
 
                     { error && <p className="text-yellow-400 text-sm w-3/5 ml-[24%] pt-[1%]">! {error}</p>}
 

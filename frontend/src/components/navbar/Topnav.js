@@ -12,7 +12,7 @@ const TopNav = () => {
   return (
     <section className="bg-slate-600  flex flex-col md:flex-row justify-center items-center">
 
-          <div  className="hidden md:block w-1/5 text-center font-bold font-logo lg:text-2xl">Morbik Social</div>
+          <Link to={"/"} className="hidden md:block w-1/5 text-center font-bold font-logo lg:text-2xl">Morbik Social</Link>
 
           <div className="w-full md:w-8/12 py-1">
            <Search />
