@@ -1,8 +1,6 @@
 import { useState } from "react"
 import {  Link } from "react-router-dom"
 
-import avatar from "../assets/placeholder/black.png"
-
 import { useAuthContext} from "../customHooks/useMyContext"
 
 import { AUTH_ACTIONS } from "../contex/authContext"
@@ -81,7 +79,7 @@ const handleFollow = async () => {
           <div className={issuggestion ? "w-[85%] flex justify-between items-center" : "flex justify-between items-center"}>
 
             <Link to={`/myhome/${post.userId}`} className="flex items-center">
-              <img src={ post.userProfilePicture === "" ? avatar : `/public/data/uploads/${post.userProfilePicture}` } alt={post.username} className='w-10 h-10 rounded-full'/>
+              <img src={`/public/data/uploads/${post.userProfilePicture}`} alt={post.username} className='w-10 h-10 rounded-full'/>
               <h5 className="font-bold ml-2 font-sans">{post.username}</h5>
             </Link>
 
@@ -91,7 +89,7 @@ const handleFollow = async () => {
             <p className="text-gray-400 text-sm">{post.createdAt}</p>
         </div>
 
-        <p className={ post.img === "" ? " max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll ml-12" : "ml-12"}>{post.desc}</p>
+        <p className={ post.img === "" ? " max-h-[30vh] overflow-y-hidden hover:overflow-y-scroll ml-12 mb-4" : "ml-12 mb-4"}>{post.desc}</p>
       </section>
     }
 

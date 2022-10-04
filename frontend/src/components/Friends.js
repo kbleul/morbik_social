@@ -3,8 +3,6 @@ import { useMediaQuery } from 'react-responsive';
 
 import { useAuthContext } from "../customHooks/useMyContext"
 
-import pp from "../assets/placeholder/black.png"
-
 
 const Friends = ({ chatingwith , relation , onlineUsers , set_currentpage , set_chatingWith_name }) => {
 
@@ -54,7 +52,7 @@ useEffect(() => {
         { friends.map(tempf => (
             <div key={tempf._id} className={isMobileDevice ? "w-full flex  items-center  pl-12 my-[7%] cursor-pointer" : "w-full flex  items-center md:pl-[17%] lg:mr-4 mt-[8%] cursor-pointer hover:bg-gray-100" }
                 onClick={() => handleChatwith(tempf._id , tempf.username)}>
-                <img className="w-12 h-12 rounded-full" src={ tempf.profilePicture === "" ? pp : `/public/data/uploads/${tempf.profilePicture}`} alt={tempf.username} />
+                <img className="w-12 h-12 rounded-full" src={`/public/data/uploads/${tempf.profilePicture}`} alt={tempf.username} />
                 <p className="w-full text-left text-base pl-4">{tempf.username}</p>
             </div>
         ))}

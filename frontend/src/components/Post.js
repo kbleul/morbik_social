@@ -1,5 +1,3 @@
-
-import avatarimg from "../assets/placeholder/black.png"
 import { useState } from "react"
 
 import { useAuthContext } from "../customHooks/useMyContext"
@@ -91,7 +89,7 @@ const handleSubmit = async (e) => {
 
   return (
     <div className="w-[90%] md:w-[60%] ml-[5%] md:ml-0 mt-40 md:mt-4 flex">
-      <img src={user.profilePicture === "" ? avatarimg : `/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-16 h-16 rounded-full self-center' />
+      <img src={`/public/data/uploads/${user.profilePicture}`} alt="profile" className='w-16 h-16 rounded-full self-center' />
 
       <form onSubmit={e => handleSubmit(e)} encType="multipart/form-data" className="ml-4 w-4/5">
         <textarea value={disc} onChange={e => set_disc(e.target.value)} placeholder="What's on your mind ?" className="text-xl py-4 px-2 border-b-2 focus:outline-0 outline-0 w-full" />

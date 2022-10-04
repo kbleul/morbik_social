@@ -37,17 +37,17 @@ const postOtherInfo = async (e) => {
                 set_city("")
                 set_isnew(false)
         })
-        .catch((error) => {  console.error('Error:', error);  });
+        .catch((error) => {  console.log('Error:', error);  });
 
 }
 
-    return( <form className="w-full md:w-2/3" onSubmit={e => postOtherInfo(e)}>
+    return( <form className="w-full md:w-3/5 md:ml-[20%]" onSubmit={e => postOtherInfo(e)}>
         
-    <label className="block w-full text-center mb-[5%]">Say someting about yourself</label>
-    <textarea value={aboutme} onChange={ e => set_aboutme(e.target.value)} className="w-[90%] ml-[5%] border border-gray-300 px-2 h-[20vh] focus:border-none" />
+    <label className="block w-full text-center mb-[3%]">Say someting about yourself</label>
+    <textarea value={aboutme} onChange={ e => set_aboutme(e.target.value)} className="w-[90%] ml-[5%] border border-gray-300 px-2 py-4 h-[12vh] focus:border-none" />
 
-    <label className="block w-full text-center mb-[2%] mt-[8%]">Relationship Status</label>
-    <select className="w-1/2 ml-[25%]" value={relationship} onChange={e => set_relationship(e.target.value) }>            
+    <label className="block w-full text-center mb-[2%] mt-[5%]">Relationship Status</label>
+    <select className="w-[50%] md:w-[30%] ml-[25%] md:ml-[35%]" value={relationship} onChange={e => set_relationship(e.target.value) }>            
       <option value="Single">Single 🕺</option>
       <option value="Married">Married</option>
       <option value="In a Relationship">In a Relationship</option>
@@ -57,8 +57,8 @@ const postOtherInfo = async (e) => {
       <option value="It's a Secret">It's a Secret</option>
     </select>
 
-    <label className="block w-full text-center mb-[2%] mt-[8%]">Country</label>
-    <select className="w-1/2 ml-[25%]" value={country} onChange={ e => set_country(e.target.value) }>
+    <label className="block w-full text-center mb-[2%] mt-[5%]">Country</label>
+    <select className="w-[50%] md:w-[30%] ml-[25%] md:ml-[35%]" value={country} onChange={ e => set_country(e.target.value) }>
         <option value="0">-- Select Country --</option>
         <option  value="United States">United States</option>
         <option value="Canada">Canada</option>
@@ -298,10 +298,11 @@ const postOtherInfo = async (e) => {
         <option value="Zimbabwe">Zimbabwe</option>
     </select>
 
-    <label className="block w-full text-center mb-[2%] mt-[8%]">City</label>
-    <input className="w-[70%] md:w-4/5 ml-[15%] md:ml-[10%] border-b border-gray-500 focus:border-none mb-2" type="text" value={city} onChange={e => set_city(e.target.value) } />
+    <label className="block w-full text-center mb-[2%] mt-[6%]">City</label>
+    <input className="w-[70%] md:w-[50%] ml-[15%] md:ml-[25%] border-b border-gray-500 focus:border-none mb-2 text-center" type="text" value={city} onChange={e => set_city(e.target.value) } />
+
+    <button className="hover:text-red-500 cursor-pointer mt-8 w-[40%] ml-[30%]">Submit</button>
     <hr />
-    <button className="hover:text-red-500 cursor-pointer my-4 w-[30%] ml-[30%]">Submit</button>
    </form>)
 }
 

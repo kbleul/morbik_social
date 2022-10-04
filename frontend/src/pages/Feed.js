@@ -1,5 +1,5 @@
 
-import { useEffect , useState , useCallback } from "react"
+import { useEffect , useState  } from "react"
 import { useMediaQuery } from 'react-responsive';
 
 import loading from "../assets/loading/loading2.gif"
@@ -23,7 +23,6 @@ const Feed = () => {
 
   const { fetchPosts , post_isloading , post_error , sugg_isloading , sugg_error } = useFetchPosts()
 
-  //const getPosts  = useCallback(() => fetchPosts() , [])
 
   useEffect(() => { fetchPosts() }, [fetchPosts])
 

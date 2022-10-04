@@ -1,5 +1,5 @@
 import { useState } from "react"
-import blackimg from "../assets/placeholder/black.png"
+
 import { AUTH_ACTIONS } from "../contex/authContext"
 import { useAuthContext } from "../customHooks/useMyContext"
 
@@ -64,7 +64,7 @@ const UpdateProfilePic = ( { set_currenttask } ) => {
               </div> : 
               
               <div className="w-full relative flex justify-center" >
-                <img className="w-64 h-64 rounded-full mt-12" src={blackimg} alt="default profile"/>
+                <img className="w-64 h-64 rounded-full mt-12" src={`/public/data/uploads/black.png`} alt="default profile"/>
               </div>
           }
           </div>

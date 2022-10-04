@@ -1,5 +1,4 @@
 import { useState } from "react"
-import coverimg from "../assets/placeholder/cover.jpg"
 import { AUTH_ACTIONS } from "../contex/authContext"
 import { useAuthContext } from "../customHooks/useMyContext"
 
@@ -62,7 +61,7 @@ const postCoverPicture = async (e) => {
             onClick={() => { set_file(null); set_src("")}}>x</p>
             </div> : 
             <div className="w-full relative flex justify-center" >
-            <img className="w-full h-[50vh] mt-12" src={coverimg} alt="default profile"/>
+            <img className="w-full h-[50vh] mt-12" src={`/public/data/uploads/cover.jpg`} alt="default profile"/>
             </div>
         }
         </div>

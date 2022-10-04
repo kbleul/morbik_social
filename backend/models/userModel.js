@@ -25,11 +25,11 @@ const userSchema = new Schema({
     },
     profilePicture : {
         type : String,
-        default : ""
+        default : "black.png"
     },
     coverPicture : {
         type : String,
-        default : ""
+        default : "cover.jpg"
     },
     followers : {
         type : Array,
