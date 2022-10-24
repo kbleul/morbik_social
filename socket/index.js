@@ -1,4 +1,4 @@
-const io = require("socket.io")(8900, {
+const io = require("socket.io")(5000, {
     cors : {  origin : "http://localhost:3000",   }
 })
 
@@ -36,7 +36,7 @@ io.on("connection", (socket) => {
         const user = getUser(doc.receiverId)
 
         io.to(user?.socketId).emit("getMessage", { senderId : doc.senderId , text : doc.text } )
-        console.log("sent message")
+        console.log("sent message" , )
     })
 
 

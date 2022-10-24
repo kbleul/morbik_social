@@ -43,7 +43,7 @@ const loginUser = async ( req , res ) => {
 
     try {
         const user = await User.login( username_or_email , password )
-
+console.log("ola")
                 //create token
                 const token = createToken(user._id)
 
