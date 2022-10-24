@@ -55,10 +55,10 @@ This is a MERN stack project and that also uses tailwind for styling.
 <table>
     <tr>
         <td >
-    <img style="height: 280px" src="./readme_imgs/social.png" />
+    <img style="height: 280px; width: 98%" src="./readme_imgs/social.png" />
         </td>
         <td>
-    <img style="height: 280px" src="./readme_imgs/social2.png" />
+    <img style="height: 280px; width: 98%" src="./readme_imgs/social2.png" />
         </td>
     </tr>
      <tr>
